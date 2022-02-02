@@ -28,8 +28,8 @@ div {
   display: grid;
   /* height: 20rem; */
   /* width: 20rem; */
-  width: 50vw;
-  height: 50vw;
+  width: 60vw;
+  height: 60vw;
   grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
   grid-template-rows: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
   gap: 0px 0px;
@@ -302,13 +302,13 @@ div {
   grid-area: h1;
 }
 
-.light {
+.light-cell {
   background: #fff;
-  font-size: 8vmin;
+  font-size: 7vmin;
 }
-.dark {
+.dark-cell {
   background: gray;
-  font-size: 8vmin;
+  font-size: 7vmin;
 }
 
 .square {
