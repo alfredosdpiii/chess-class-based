@@ -89,12 +89,10 @@ function config() {
     // console.log(rank);
     for (let column = 0; column < rank.length; column++) {
       const piece = rank[column];
-      squares++;
-      console.log(squares);
 
       const cell = document.createElement("div");
       cell.classList.add("cell");
-      if (squares % 2 === 0) {
+      if (row % 2 === column % 2) {
         cell.classList.add("light-cell");
       } else {
         cell.classList.add("dark-cell");
@@ -105,8 +103,8 @@ function config() {
       chessboard.appendChild(cell);
       //black piece
       if (board[row][column] === "bp") {
-        // const blackPawn = new Pawn(board[row][column], false);
-        cell.innerHTML = "&#9823;";
+        const blackRook = new Rook([row][column], false);
+        cell.innerHTML = this.type;
       }
       if (board[row][column] === "br") {
         cell.innerHTML = "&#9820;";
