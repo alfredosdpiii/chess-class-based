@@ -21,6 +21,7 @@ div {
   justify-content: center;
   align-items: center;
   background: #faf9f6;
+  overflow: hidden;
 }
 
 .chess-board {
@@ -43,6 +44,7 @@ div {
     'a2 b2 c2 d2 e2 f2 g2 h2'
     'a1 b1 c1 d1 e1 f1 g1 h1';
   grid-area: chess-board;
+  border: 3px solid black;
 }
 
 .a8 {
@@ -300,11 +302,15 @@ div {
   grid-area: h1;
 }
 
-.light {
+.light-cell {
   background: #fff;
   font-size: 8vmin;
 }
 .dark {
   background: gray;
-  font-size: 8vmin;
+  font-size: 7vmin;
+}
+
+.square {
+  cursor: pointer;
 }
