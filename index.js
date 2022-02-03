@@ -13,7 +13,6 @@ let board = [
   ["wr", "wn", "wb", "wk", "wq", "wb", "wn", "wr"],
 ];
 
-config();
 
 // const coordinates = Array.from(cells);
 // console.log(coordinates);
@@ -34,12 +33,20 @@ class Pawn extends Piece {
   constructor(coordinate, isWhite) {
     super(coordinate, isWhite);
     this.value = 1;
-    this.type = isWhite ? "&#9817;;" : "&#9823;";
+    this.type = isWhite ? `fas fa-chess-pawn white` : `fas fa-chess-pawn`;
   }
 
-  displayPiece() {
-    coordinates[this.coordinate].innerHTML = this.type;
-  }
+  // displayPiece() {
+  //   coordinates[this.coordi;nate].innerHTML = this.type;
+  // }
+
+  createPawn(cell){
+      const newP = document.createElement('i')
+      // const text = document.createTextNode(this.type)
+      // newP.appendChild(text)
+      newP.className = `${this.type}`
+      cell.appendChild(newP)
+    };
 }
 
 class Rook extends Piece {
@@ -103,8 +110,12 @@ function config() {
       chessboard.appendChild(cell);
       //black piece
       if (board[row][column] === "bp") {
-        const blackRook = new Rook([row][column], false);
-        cell.innerHTML = this.type;
+        // let blackRook = new Rook([row][column], false);
+        // cell.innerHTML = this.type;
+        
+        let testPawn = new Pawn([row][column], false);
+        let created = testPawn.createPawn(cell)
+        console.log(created)
       }
       if (board[row][column] === "br") {
         cell.innerHTML = "&#9820;";
@@ -124,7 +135,10 @@ function config() {
 
       //white piece
       if (board[row][column] === "wp") {
-        cell.innerHTML = "&#9817;";
+        let whitePawn = new Pawn([row][column], true);
+
+        console.log(cell)
+        let created = whitePawn.createPawn(cell)
       }
       if (board[row][column] === "wr") {
         cell.innerHTML = "&#9814;";
@@ -144,3 +158,5 @@ function config() {
     }
   }
 }
+
+config()

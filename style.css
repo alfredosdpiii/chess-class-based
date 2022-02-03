@@ -46,6 +46,9 @@ div {
   grid-area: chess-board;
   border: 3px solid black;
 }
+.white {
+  color: green;
+}
 
 .a8 {
   grid-area: a8;
@@ -304,9 +307,9 @@ div {
 
 .light-cell {
   background: #fff;
-  font-size: 8vmin;
+  font-size: 7vmin;
 }
-.dark {
+.dark-cell {
   background: gray;
   font-size: 7vmin;
 }
