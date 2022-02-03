@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-const cells = document.querySelectorAll('.cell')
+const chessboard = document.querySelector(".chess-board");
+const cells = document.querySelectorAll(".cell");
 // .forEach((cell) => cell.addEventListener('click', handleCellClick))
 
 let board = [
