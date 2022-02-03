@@ -1,6 +1,5 @@
 const chessboard = document.querySelector(".chess-board");
-const cells = document.querySelectorAll(".cell");
-// .forEach((cell) => cell.addEventListener('click', handleCellClick))
+let state = false;
 
 let board = [
   ["br", "bn", "bb", "bk", "bq", "bb", "bn", "br"],
@@ -12,8 +11,6 @@ let board = [
   ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
   ["wr", "wn", "wb", "wk", "wq", "wb", "wn", "wr"],
 ];
-
-config();
 
 // const coordinates = Array.from(cells);
 // console.log(coordinates);
@@ -35,10 +32,6 @@ class Pawn extends Piece {
     super(coordinate, isWhite);
     this.value = 1;
     this.type = isWhite ? "&#9817;;" : "&#9823;";
-  }
-
-  displayPiece() {
-    coordinates[this.coordinate].innerHTML = this.type;
   }
 }
 
@@ -83,7 +76,6 @@ class King extends Piece {
 }
 
 function config() {
-  let squares = 0;
   for (let row = 0; row < board.length; row++) {
     const rank = board[row];
     // console.log(rank);
@@ -93,18 +85,21 @@ function config() {
       const cell = document.createElement("div");
       cell.classList.add("cell");
       if (row % 2 === column % 2) {
-        cell.classList.add("light-cell");
+        cell.classList.add("cell-light");
       } else {
-        cell.classList.add("dark-cell");
+        cell.classList.add("cell-dark");
       }
       cell.setAttribute("data-rank", row);
       cell.setAttribute("data-file", column);
 
       chessboard.appendChild(cell);
+
+      let coordinate = [row][column];
       //black piece
       if (board[row][column] === "bp") {
-        const blackRook = new Rook([row][column], false);
-        cell.innerHTML = this.type;
+        const blackPawn = new Pawn(`[${row}][${column}]`, false);
+        cell.innerHTML = blackPawn.type;
+        // console.log(blackPawn);
       }
       if (board[row][column] === "br") {
         cell.innerHTML = "&#9820;";
@@ -143,4 +138,34 @@ function config() {
       }
     }
   }
+}
+
+config();
+const cells = document.querySelectorAll(".cell");
+
+cells.forEach((cell) => {
+  cell.addEventListener("click", clickHandler);
+});
+
+function clickHandler(e) {
+  const targetCell = e.target;
+  let rank = targetCell.dataset.rank;
+  let file = targetCell.dataset.file;
+  let currentBoardItem;
+
+  if (!state) {
+    state = true;
+    currentCell = targetCell;
+    currentPiece = targetCell.innerHTML;
+    currentBoardItem = board[rank][file];
+    currentSquare = board[rank][file];
+  } else {
+    e.target.innerHTML = currentPiece;
+    currentCell.innerHTML = "";
+    state = false;
+    currentSquare = "";
+    board[e.target.dataset.rank][e.target.dataset.file] = currentBoardItem;
+  }
+
+  console.log(board);
 }

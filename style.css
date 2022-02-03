@@ -301,12 +301,15 @@ div {
 .h1 {
   grid-area: h1;
 }
+.cell {
+  cursor: pointer;
+}
 
-.light-cell {
+.cell-light {
   background: #fff;
   font-size: 7vmin;
 }
-.dark-cell {
+.cell-dark {
   background: gray;
   font-size: 7vmin;
 }
