@@ -48,25 +48,26 @@ class Piece {
     switch (piece) {
       case 'pawn':
         if (isWhite === false) {
-          let createdPawn = new Pawn(this.coordniate, false)
+          let createdPawn = new Pawn(this.coordinate, false)
           const pawnEl = document.createElement('i')
           pawnEl.className = `${createdPawn.type}`
           cell.appendChild(pawnEl)
         } else {
-          let createdPawn = new Pawn(this.coordniate, true)
+          let createdPawn = new Pawn(this.coordinate, true)
           const pawnEl = document.createElement('i')
           pawnEl.className = `${createdPawn.type}`
           cell.appendChild(pawnEl)
+          pawnEl.addEventListener('click', handleClick(createdPawn))
         }
         break
       case 'rook':
         if (isWhite === false) {
-          let createdRook = new Rook(this.coordniate, false)
+          let createdRook = new Rook(this.coordinate, false)
           const rookEl = document.createElement('i')
           rookEl.className = `${createdRook.type}`
           cell.appendChild(rookEl)
         } else {
-          let createdRook = new Rook(this.coordniate, true)
+          let createdRook = new Rook(this.coordinate, true)
           const rookEl = document.createElement('i')
           rookEl.className = `${createdRook.type}`
           cell.appendChild(rookEl)
@@ -74,12 +75,12 @@ class Piece {
         break
       case 'knight':
         if (isWhite === false) {
-          let createdKnight = new Knight(this.coordniate, false)
+          let createdKnight = new Knight(this.coordinate, false)
           const knightEl = document.createElement('i')
           knightEl.className = `${createdKnight.type}`
           cell.appendChild(knightEl)
         } else {
-          let createdKnight = new Knight(this.coordniate, true)
+          let createdKnight = new Knight(this.coordinate, true)
           const knightEl = document.createElement('i')
           knightEl.className = `${createdKnight.type}`
           cell.appendChild(knightEl)
@@ -87,12 +88,12 @@ class Piece {
         break
       case 'bishop':
         if (isWhite === false) {
-          let createdBishop = new Bishop(this.coordniate, false)
+          let createdBishop = new Bishop(this.coordinate, false)
           const bishopEl = document.createElement('i')
           bishopEl.className = `${createdBishop.type}`
           cell.appendChild(bishopEl)
         } else {
-          let createdBishop = new Bishop(this.coordniate, true)
+          let createdBishop = new Bishop(this.coordinate, true)
           const bishopEl = document.createElement('i')
           bishopEl.className = `${createdBishop.type}`
           cell.appendChild(bishopEl)
@@ -100,12 +101,12 @@ class Piece {
         break
       case 'queen':
         if (isWhite === false) {
-          let createdQueen = new Queen(this.coordniate, false)
+          let createdQueen = new Queen(this.coordinate, false)
           const queenEl = document.createElement('i')
           queenEl.className = `${createdQueen.type}`
           cell.appendChild(queenEl)
         } else {
-          let createdQueen = new Queen(this.coordniate, true)
+          let createdQueen = new Queen(this.coordinate, true)
           const queenEl = document.createElement('i')
           queenEl.className = `${createdQueen.type}`
           cell.appendChild(queenEl)
@@ -113,12 +114,12 @@ class Piece {
         break
       case 'king':
         if (isWhite === false) {
-          let createdKing = new King(this.coordniate, false)
+          let createdKing = new King(this.coordinate, false)
           const kingEl = document.createElement('i')
           kingEl.className = `${createdKing.type}`
           cell.appendChild(kingEl)
         } else {
-          let createdKing = new King(this.coordniate, true)
+          let createdKing = new King(this.coordinate, true)
           const kingEl = document.createElement('i')
           kingEl.className = `${createdKing.type}`
           cell.appendChild(kingEl)
@@ -268,4 +269,5 @@ function config() {
   }
 }
 
+function handleClick(piece) {}
 config()
