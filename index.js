@@ -278,7 +278,7 @@ function addEventHandlers(){
         let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
         console.log(pieces)
         pieces.forEach((piece, i) => {
-            piece.addEventListener('click', handleClick(piece))
+            piece.addEventListener('click', handleClick)
         })
     }
 }
