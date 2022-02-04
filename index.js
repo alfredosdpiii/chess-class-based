@@ -277,12 +277,15 @@ function addEventHandlers(){
     for (let i = 0; i < pieceNames.length; i++){
         let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
         console.log(pieces)
+        pieces.forEach((piece, i) => {
+            piece.addEventListener('click', handleClick(piece))
+        })
     }
 }
 
 
 function handleClick(piece) {
-  console.log("test");
+  console.log(`${piece} test`)
 }
 config();
 addEventHandlers()
