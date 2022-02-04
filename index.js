@@ -209,7 +209,6 @@ function config() {
         // console.log(created)
         let bp = new Piece();
         bp.createPiece(cell, "pawn", false);
-        console.log(bp.createPiece());
       }
       if (board[row][column] === "br") {
         // let blackRook = new Pawn([row][column], false);
@@ -267,13 +266,23 @@ function config() {
     }
   }
 }
-const pawn = document.querySelectorAll(".fa-chess-pawn");
-pawn.forEach((pawn, i) => {
-  pawn.addEventListener(handleClick(pawn));
-});
-console.log(pawn);
+// const pawn = document.querySelectorAll(".fa-chess-pawn");
+// pawn.forEach((pawn, i) => {
+//   pawn.addEventListener(handleClick(pawn));
+// });
+// console.log(pawn);
+const pieceNames = ['pawn', 'king', 'queen', 'rook', 'bishop', 'knight']
+
+function addEventHandlers(){
+    for (let i = 0; i < pieceNames.length; i++){
+        let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
+        console.log(pieces)
+    }
+}
+
 
 function handleClick(piece) {
   console.log("test");
 }
 config();
+addEventHandlers()
