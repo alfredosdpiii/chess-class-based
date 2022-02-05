@@ -304,9 +304,9 @@ div {
 .h1 {
   grid-area: h1;
 }
-.cell {
+/* .cell {
   cursor: pointer;
-}
+} */
 
 .light-cell {
   background: #fff;
@@ -315,8 +315,4 @@ div {
 .dark-cell {
   background: gray;
   font-size: 7vmin;
-}
-
-.square {
-  cursor: pointer;
 }

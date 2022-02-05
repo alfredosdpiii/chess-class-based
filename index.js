@@ -1,5 +1,5 @@
 const chessboard = document.querySelector(".chess-board");
-// const cells = document.querySelectorAll(".cell");
+const cells = document.querySelectorAll(".cell");
 // .forEach((cell) => cell.addEventListener('click', handleCellClick))
 
 let board = [
@@ -26,6 +26,11 @@ class Piece {
     this.white = isWhite;
     this.type = type;
   }
+
+  // checkLegalMove(piece.target.value) {
+  //   console.log("test");
+  // }
+
   createPiece(cell, piece, isWhite) {
     // if (piece === 'pawn' && isWhite === false) {
     //   let blackPawn = new Pawn(this.coordinate, false)
@@ -51,11 +56,13 @@ class Piece {
           let createdPawn = new Pawn(this.coordinate, false);
           const pawnEl = document.createElement("i");
           pawnEl.className = `${createdPawn.type}`;
+          pawnEl.value = 1;
           cell.appendChild(pawnEl);
         } else {
           let createdPawn = new Pawn(this.coordinate, true);
           const pawnEl = document.createElement("i");
           pawnEl.className = `${createdPawn.type}`;
+          pawnEl.value = 1;
           cell.appendChild(pawnEl);
         }
         break;
@@ -64,11 +71,13 @@ class Piece {
           let createdRook = new Rook(this.coordinate, false);
           const rookEl = document.createElement("i");
           rookEl.className = `${createdRook.type}`;
+          rookEl.value = 2;
           cell.appendChild(rookEl);
         } else {
           let createdRook = new Rook(this.coordinate, true);
           const rookEl = document.createElement("i");
           rookEl.className = `${createdRook.type}`;
+          rookEl.value = 2;
           cell.appendChild(rookEl);
         }
         break;
@@ -77,11 +86,13 @@ class Piece {
           let createdKnight = new Knight(this.coordinate, false);
           const knightEl = document.createElement("i");
           knightEl.className = `${createdKnight.type}`;
+          knightEl.value = 3;
           cell.appendChild(knightEl);
         } else {
           let createdKnight = new Knight(this.coordinate, true);
           const knightEl = document.createElement("i");
           knightEl.className = `${createdKnight.type}`;
+          knightEl.value = 3;
           cell.appendChild(knightEl);
         }
         break;
@@ -90,11 +101,13 @@ class Piece {
           let createdBishop = new Bishop(this.coordinate, false);
           const bishopEl = document.createElement("i");
           bishopEl.className = `${createdBishop.type}`;
+          bishopEl.value = 4;
           cell.appendChild(bishopEl);
         } else {
           let createdBishop = new Bishop(this.coordinate, true);
           const bishopEl = document.createElement("i");
           bishopEl.className = `${createdBishop.type}`;
+          bishopEl.value = 4;
           cell.appendChild(bishopEl);
         }
         break;
@@ -103,11 +116,13 @@ class Piece {
           let createdQueen = new Queen(this.coordinate, false);
           const queenEl = document.createElement("i");
           queenEl.className = `${createdQueen.type}`;
+          queenEl.value = 5;
           cell.appendChild(queenEl);
         } else {
           let createdQueen = new Queen(this.coordinate, true);
           const queenEl = document.createElement("i");
           queenEl.className = `${createdQueen.type}`;
+          queenEl.value = 5;
           cell.appendChild(queenEl);
         }
         break;
@@ -116,11 +131,13 @@ class Piece {
           let createdKing = new King(this.coordinate, false);
           const kingEl = document.createElement("i");
           kingEl.className = `${createdKing.type}`;
+          kingEl.value = 6;
           cell.appendChild(kingEl);
         } else {
           let createdKing = new King(this.coordinate, true);
           const kingEl = document.createElement("i");
           kingEl.className = `${createdKing.type}`;
+          kingEl.value = 6;
           cell.appendChild(kingEl);
         }
         break;
@@ -131,7 +148,6 @@ class Piece {
 class Pawn extends Piece {
   constructor(coordinate, isWhite) {
     super(coordinate, isWhite);
-    this.value = 1;
     this.type = isWhite ? `fas fa-chess-pawn white` : `fas fa-chess-pawn`;
   }
 
@@ -143,7 +159,6 @@ class Pawn extends Piece {
 class Rook extends Piece {
   constructor(coordinate, isWhite) {
     super(coordinate, isWhite);
-    this.value = 1;
     this.type = isWhite ? `fas fa-chess-rook white` : `fas fa-chess-rook`;
   }
 }
@@ -151,7 +166,6 @@ class Rook extends Piece {
 class Knight extends Piece {
   constructor(coordinate, isWhite) {
     super(coordinate, isWhite);
-    this.value = 1;
     this.type = isWhite ? `fas fa-chess-knight white` : `fas fa-chess-knight`;
   }
 }
@@ -159,7 +173,6 @@ class Knight extends Piece {
 class Bishop extends Piece {
   constructor(coordinate, isWhite) {
     super(coordinate, isWhite);
-    this.value = 1;
     this.type = isWhite ? `fas fa-chess-bishop white` : `fas fa-chess-bishop`;
   }
 }
@@ -167,7 +180,6 @@ class Bishop extends Piece {
 class Queen extends Piece {
   constructor(coordinate, isWhite) {
     super(coordinate, isWhite);
-    this.value = 1;
     this.type = isWhite ? `fas fa-chess-queen white` : `fas fa-chess-queen`;
   }
 }
@@ -175,7 +187,6 @@ class Queen extends Piece {
 class King extends Piece {
   constructor(coordinate, isWhite) {
     super(coordinate, isWhite);
-    this.value = 1;
     this.type = isWhite ? `fas fa-chess-king white` : `fas fa-chess-king`;
   }
 }
@@ -209,7 +220,6 @@ function config() {
         // console.log(created)
         let bp = new Piece();
         bp.createPiece(cell, "pawn", false);
-        console.log(bp.createPiece());
       }
       if (board[row][column] === "br") {
         // let blackRook = new Pawn([row][column], false);
@@ -267,34 +277,30 @@ function config() {
     }
   }
 }
+// const pawn = document.querySelectorAll(".fa-chess-pawn");
+// pawn.forEach((pawn, i) => {
+//   pawn.addEventListener(handleClick(pawn));
+// });
+// console.log(pawn);
+const pieceNames = ["pawn", "king", "queen", "rook", "bishop", "knight"];
 
-config();
-const cells = document.querySelectorAll(".cell");
-let state = false;
-let item;
-
-cells.forEach((cell) => {
-  cell.addEventListener("click", add);
-});
-
-function add(e) {
-  if (!state) {
-    state = true;
-    targetCell = e.target;
-    x = e.target.dataset.rank;
-    y = e.target.dataset.file;
-    boardItem = board[x][y];
-    cellElement = targetCell.firstChild;
-    console.log(board);
-  } else {
-    state = false;
-    board[x][y] = " ";
-    nextCell = e.target;
-    nextCell.appendChild(cellElement);
-    cellElement = "";
-    xx = e.target.dataset.rank;
-    yy = e.target.dataset.file;
-    board[xx][yy] = boardItem;
-    console.log(board);
+function addEventHandlers() {
+  for (let i = 0; i < pieceNames.length; i++) {
+    let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
+    // console.log(pieces);
+    pieces.forEach((piece, i) => {
+      piece.style.cursor = "pointer";
+      piece.addEventListener("click", handleClick);
+    });
   }
 }
+
+function handleClick(piece) {
+  let squares = document.querySelectorAll(".cell");
+  squares.forEach((square, i) => {
+    square.style.cursor = "pointer";
+  });
+  console.log(`${piece.target.value} test`);
+}
+config();
+addEventHandlers();
