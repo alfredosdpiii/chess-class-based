@@ -325,8 +325,8 @@ function legalMove(targetPiece) {
   if (targetPiece.value === 1) {
     let possibleMove = row - 1 + column;
     console.log(possibleMove);
-    let experimentRow = document.querySelector(`.${CSS.escape(possibleMove)}`);
-    experimentRow.classList.add("highlight");
-    console.log(experimentRow);
+    let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+    targetSquare.classList.add("highlight");
+    console.log(targetSquare);
   }
 }
