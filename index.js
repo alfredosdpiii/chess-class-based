@@ -13,6 +13,14 @@ let board = [
   ["wr", "wn", "wb", "wk", "wq", "wb", "wn", "wr"],
 ];
 
+const firstRow = board[0];
+const blackPawnStart = board[1];
+const whitePawnStart = board[6];
+const lastRow = board[7];
+
+// console.log(blackPawnStart);
+// console.log(whitePawnStart);
+
 // const coordinates = Array.from(cells);
 // console.log(coordinates);
 
@@ -206,8 +214,9 @@ function config() {
       } else {
         cell.classList.add("dark-cell");
       }
-      cell.setAttribute("data-rank", row);
-      cell.setAttribute("data-file", column);
+      cell.classList.add(`${row}${column}`);
+      cell.setAttribute("data-row", row);
+      cell.setAttribute("data-column", column);
 
       chessboard.appendChild(cell);
       //black piece
@@ -299,8 +308,25 @@ function handleClick(piece) {
   let squares = document.querySelectorAll(".cell");
   squares.forEach((square, i) => {
     square.style.cursor = "pointer";
+    // console.log(row);
+    // console.log(square.dataset.row + " " + square.dataset.column);
   });
-  console.log(`${piece.target.value} test`);
+  let targetPiece = piece.target;
+  legalMove(targetPiece);
+  // console.log(`${targetPiece} test`);
 }
 config();
 addEventHandlers();
+
+function legalMove(targetPiece) {
+  let row = targetPiece.parentNode.dataset.row;
+  let column = targetPiece.parentNode.dataset.column;
+  console.log(row, column);
+  if (targetPiece.value === 1) {
+    let possibleMove = row - 1 + column;
+    console.log(possibleMove);
+    let experimentRow = document.querySelector(`.${CSS.escape(possibleMove)}`);
+    experimentRow.classList.add("highlight");
+    console.log(experimentRow);
+  }
+}

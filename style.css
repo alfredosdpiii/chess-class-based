@@ -316,3 +316,7 @@ div {
   background: gray;
   font-size: 7vmin;
 }
+
+.highlight {
+  background: rgba(82, 129, 141, 0.9);
+}
