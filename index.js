@@ -71,6 +71,7 @@ class Piece {
           const pawnEl = document.createElement("i");
           pawnEl.className = `${createdPawn.type}`;
           pawnEl.value = 1;
+          pawnEl.draggable = true;
           cell.appendChild(pawnEl);
         }
         break;
@@ -308,8 +309,6 @@ function handleClick(piece) {
   let squares = document.querySelectorAll(".cell");
   squares.forEach((square, i) => {
     square.style.cursor = "pointer";
-    // console.log(row);
-    // console.log(square.dataset.row + " " + square.dataset.column);
   });
   let targetPiece = piece.target;
   legalMove(targetPiece);
@@ -318,15 +317,102 @@ function handleClick(piece) {
 config();
 addEventHandlers();
 
+// function legalMove(targetPiece) {
+//   let row = targetPiece.parentNode.dataset.row;
+//   let column = targetPiece.parentNode.dataset.column;
+//   console.log(row, column);
+//   if (targetPiece.value === 1) {
+//     let possibleMove = row - 1 + column;
+//     let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+//     targetSquare.classList.add("highlight");
+//   }
+// }
+
 function legalMove(targetPiece) {
   let row = targetPiece.parentNode.dataset.row;
   let column = targetPiece.parentNode.dataset.column;
-  console.log(row, column);
+  // let possibleMoves = [];
   if (targetPiece.value === 1) {
-    let possibleMove = row - 1 + column;
-    console.log(possibleMove);
-    let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
-    targetSquare.classList.add("highlight");
-    console.log(targetSquare);
+    let possibleMoves = [];
+    if (row === "6") {
+      for (i = 1; i < 3; i++) {
+        let possibleMove = row - [i] + column;
+        possibleMoves.push(possibleMove);
+        let targetSquare = document.querySelector(
+          `.${CSS.escape(possibleMove)}`
+        );
+        targetSquare.classList.add("highlight");
+      }
+    } else {
+      let possibleMove = row - 1 + column;
+      let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+      targetSquare.classList.add("highlight");
+    }
+
+    // } else if (targetPiece.value === 1) {
+    // let possibleMove = row - 1 + column;
+    // let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+    // targetSquare.classList.add("highlight");
+  }
+  if (targetPiece.value === 2) {
+    let min = row; //piece location in 'row'
+    let max = 0; //end of board going up
+
+    let range = min - max;
+    console.log(min);
+    for (let i = max + 1; i < range + 1; i++) {
+      console.log(i);
+      let possibleMove = row - [i] + column;
+      let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+      targetSquare.classList.add("highlight");
+    }
+  }
+  if (targetPiece.value === 3) {
+    console.log("horse");
+    let moveUpCheck = [];
+    let knightMovement = [];
+    for (i = 1; i < 3; i++) {
+      movementUp = row - [i];
+      possibleMoveUp = row - [i] + column;
+      moveUpCheck.push(movementUp);
+      targetSquare = document.querySelector(`.${CSS.escape(possibleMoveUp)}`);
+      targetSquare.classList.add("highlight");
+    }
+    let movementRight = Number(column) + 1;
+    let movementLeft = Number(column) - 1;
+    let lastMoveUp = moveUpCheck[1];
+    let movementUpRight = lastMoveUp + movementRight.toString();
+    let movementUpLeft = lastMoveUp + movementLeft.toString();
+    knightMovement.push(movementUpRight);
+    knightMovement.push(movementUpLeft);
+    console.log(knightMovement);
+    knightMovement.forEach((move, i) => {
+      targetSquare = document.querySelector(
+        `.${CSS.escape(knightMovement[i])}`
+      );
+      targetSquare.classList.add("highlight");
+    });
+    console.log(movementUpRight);
+  }
+
+  if (targetPiece.value === 4) {
+    console.log("bishop");
+    let moves = [];
+    let min = column;
+    let max = 8 - min;
+
+    for (let i = 0; i < max; i++) {
+      movementUp = row - [i];
+      movementRight = Number(min++);
+      movementUpRight = movementUp + movementRight.toString();
+      // console.log(movementUpRight);
+      moves.push(movementUpRight);
+      console.log(moves);
+    }
+
+    moves.forEach((move, i) => {
+      targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
+      targetSquare.classList.add("highlight");
+    });
   }
 }
