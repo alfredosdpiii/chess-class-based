@@ -1,14 +1,14 @@
 const chessboard = document.querySelector(".chess-board");
 const cells = document.querySelectorAll(".cell");
 // .forEach((cell) => cell.addEventListener('click', handleCellClick))
-
+let state = false;
 let board = [
   ["br", "bn", "bb", "bk", "bq", "bb", "bn", "br"],
   ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
-  ["", "", "", "", "", "", "", ""],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
+  [" ", " ", " ", " ", " ", " ", " ", " "],
   ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
   ["wr", "wn", "wb", "wk", "wq", "wb", "wn", "wr"],
 ];
@@ -292,6 +292,23 @@ function config() {
 //   pawn.addEventListener(handleClick(pawn));
 // });
 // console.log(pawn);
+
+//UNCOMMENT IF NEED TO RESET
+/////////////////////////////////////////////////////////
+// const pieceNames = ["pawn", "king", "queen", "rook", "bishop", "knight"];
+
+// function addEventHandlers() {
+//   for (let i = 0; i < pieceNames.length; i++) {
+//     let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
+//     // console.log(pieces);
+//     pieces.forEach((piece, i) => {
+//       piece.style.cursor = "pointer";
+//       piece.addEventListener("click", handleClick);
+//     });
+//   }
+// }
+////////////////////////////////////////////////////
+
 const pieceNames = ["pawn", "king", "queen", "rook", "bishop", "knight"];
 
 function addEventHandlers() {
@@ -300,37 +317,111 @@ function addEventHandlers() {
     // console.log(pieces);
     pieces.forEach((piece, i) => {
       piece.style.cursor = "pointer";
-      piece.addEventListener("click", handleClick);
+      // piece.addEventListener("click", handleClick);
+    });
+
+    let squares = document.querySelectorAll(".cell");
+    squares.forEach((square, i) => {
+      square.addEventListener("click", handleClick);
     });
   }
 }
 
-function handleClick(piece) {
-  let squares = document.querySelectorAll(".cell");
-  squares.forEach((square, i) => {
-    square.style.cursor = "pointer";
-  });
-  let targetPiece = piece.target;
-  legalMove(targetPiece);
-  // console.log(`${targetPiece} test`);
-}
 config();
 addEventHandlers();
 
-// function legalMove(targetPiece) {
-//   let row = targetPiece.parentNode.dataset.row;
-//   let column = targetPiece.parentNode.dataset.column;
-//   console.log(row, column);
-//   if (targetPiece.value === 1) {
-//     let possibleMove = row - 1 + column;
-//     let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
-//     targetSquare.classList.add("highlight");
+function handleClick(piece) {
+  if (!state) {
+    state = true;
+
+    let squares = [...document.querySelectorAll(".cell")].filter(
+      (square) => !square.querySelector(`i`)
+    );
+    squares.forEach((square, i) => {
+      square.style.cursor = "pointer";
+    });
+
+    targetPiece = piece.target;
+    targetDiv = targetPiece.parentNode;
+    x = targetPiece.parentNode.dataset.row;
+    y = targetPiece.parentNode.dataset.column;
+
+    boardItem = board[x][y];
+    console.log(targetDiv);
+    legalMove(targetPiece);
+  } else {
+    let squares = [...document.querySelectorAll(".cell")].filter(
+      (square) => !square.querySelector(`.highlight`)
+    );
+    squares.forEach((square, i) => {
+      square.classList.remove("highlight");
+    });
+
+    state = false;
+    board[x][y] = " ";
+
+    landingSquare = piece.target;
+    landingSquare.appendChild(targetPiece);
+    console.log(targetDiv);
+    console.log(landingSquare);
+
+    let x2 = piece.target.dataset.row;
+    let y2 = piece.target.dataset.column;
+    board[x2][y2] = boardItem;
+
+    console.log(board);
+  }
+}
+
+////// UNCOMMENT IF NEED TO RESET
+// //////////////////////////////////////////////////////////
+// function handleClick(piece) {
+//   let squares = [...document.querySelectorAll(".cell")].filter(
+//     (square) => !square.querySelector(`i`)
+//   );
+//   squares.forEach((square, i) => {
+//     square.style.cursor = "pointer";
+//     square.addEventListener("click", handleClick, { once: true });
+//   });
+//   if (!state) {
+//     state = true;
+//     targetPiece = piece.target;
+//     x = targetPiece.parentNode.dataset.row;
+//     y = targetPiece.parentNode.dataset.column;
+
+//     boardItem = board[x][y];
+//     console.log(boardItem);
+//     // let squares = [...document.querySelectorAll(".cell")].filter(
+//     //   (square) => !square.querySelector(`i`)
+//     // );
+//     // squares.forEach((square, i) => {
+//     //   square.style.cursor = "pointer";
+//     //   // square.addEventListener("click", test);
+//     // });
+//     legalMove(targetPiece);
+//     console.log(x, y);
+//     console.log(board);
+//   } else {
+//     state = false;
+//     board[x][y] = " ";
+//     let x2 = piece.target.parentNode.dataset.row;
+//     let y2 = piece.target.parentNode.dataset.column;
+//     console.log(x2, y2);
+//     board[x2][y2] = boardItem;
+
+//     console.log(board);
 //   }
 // }
+
+// function test() {
+//   console.log("test");
+// }
+////////////////////////////////////////////////////////////////////////////////
 
 function legalMove(targetPiece) {
   let row = targetPiece.parentNode.dataset.row;
   let column = targetPiece.parentNode.dataset.column;
+
   // let possibleMoves = [];
   if (targetPiece.value === 1) {
     let possibleMoves = [];
@@ -359,16 +450,16 @@ function legalMove(targetPiece) {
     let max = 0; //end of board going up
 
     let range = min - max;
-    console.log(min);
+    // console.log(min);
     for (let i = max + 1; i < range + 1; i++) {
-      console.log(i);
+      // console.log(i);
       let possibleMove = row - [i] + column;
       let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
       targetSquare.classList.add("highlight");
     }
   }
   if (targetPiece.value === 3) {
-    console.log("horse");
+    // console.log("horse");
     let moveUpCheck = [];
     let knightMovement = [];
     for (i = 1; i < 3; i++) {
@@ -385,18 +476,18 @@ function legalMove(targetPiece) {
     let movementUpLeft = lastMoveUp + movementLeft.toString();
     knightMovement.push(movementUpRight);
     knightMovement.push(movementUpLeft);
-    console.log(knightMovement);
+    // console.log(knightMovement);
     knightMovement.forEach((move, i) => {
       targetSquare = document.querySelector(
         `.${CSS.escape(knightMovement[i])}`
       );
       targetSquare.classList.add("highlight");
     });
-    console.log(movementUpRight);
+    // console.log(movementUpRight);
   }
 
   if (targetPiece.value === 4) {
-    console.log("bishop");
+    // console.log("bishop");
     let moves = [];
     let min = column;
     let max = 8 - min;
@@ -407,7 +498,7 @@ function legalMove(targetPiece) {
       movementUpRight = movementUp + movementRight.toString();
       // console.log(movementUpRight);
       moves.push(movementUpRight);
-      console.log(moves);
+      // console.log(moves);
     }
 
     moves.forEach((move, i) => {
