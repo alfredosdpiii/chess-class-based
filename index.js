@@ -1,6 +1,7 @@
 const chessboard = document.querySelector(".chess-board");
 const cells = document.querySelectorAll(".cell");
 // .forEach((cell) => cell.addEventListener('click', handleCellClick))
+let whiteTurn = true;
 let state = false;
 let board = [
   ["br", "bn", "bb", "bk", "bq", "bb", "bn", "br"],
@@ -347,7 +348,6 @@ function handleClick(piece) {
     y = targetPiece.parentNode.dataset.column;
 
     boardItem = board[x][y];
-    console.log(targetDiv);
     legalMove(targetPiece);
   } else {
     let squares = [...document.querySelectorAll(".cell")].filter(
@@ -362,14 +362,17 @@ function handleClick(piece) {
 
     landingSquare = piece.target;
     landingSquare.appendChild(targetPiece);
-    console.log(targetDiv);
-    console.log(landingSquare);
 
     let x2 = piece.target.dataset.row;
     let y2 = piece.target.dataset.column;
     board[x2][y2] = boardItem;
 
-    console.log(board);
+    if (whiteTurn === true) {
+      whiteTurn = false;
+    } else {
+      whiteTurn = true;
+    }
+    console.log(whiteTurn);
   }
 }
 
@@ -424,20 +427,40 @@ function legalMove(targetPiece) {
 
   // let possibleMoves = [];
   if (targetPiece.value === 1) {
+    console.log(whiteTurn);
     let possibleMoves = [];
-    if (row === "6") {
-      for (i = 1; i < 3; i++) {
-        let possibleMove = row - [i] + column;
-        possibleMoves.push(possibleMove);
-        let targetSquare = document.querySelector(
+    if (whiteTurn === true) {
+      if (row === "6") {
+        for (i = 1; i < 3; i++) {
+          let possibleMove = row - i + column;
+          possibleMoves.push(possibleMove);
+          let targetSquare = document.querySelector(
+            `.${CSS.escape(possibleMove)}`
+          );
+          targetSquare.classList.add("highlight");
+        }
+      } else {
+        possibleMove = row - 1 + column;
+        targetSquareWhite = document.querySelector(
           `.${CSS.escape(possibleMove)}`
         );
-        targetSquare.classList.add("highlight");
+        targetSquareWhite.classList.add("highlight");
       }
     } else {
-      let possibleMove = row - 1 + column;
-      let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
-      targetSquare.classList.add("highlight");
+      if (row === "1") {
+        for (i = 1; i < 3; i++) {
+          possibleMove = Number(row) + Number(i) + column;
+          possibleMoves.push(possibleMove);
+          targetSquareBlack = document.querySelector(
+            `.${CSS.escape(possibleMove)}`
+          );
+          targetSquareBlack.classList.add("highlight");
+        }
+      } else {
+        possibleMove = row + 1 + column;
+        targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+        targetSquare.classList.add("highlight");
+      }
     }
 
     // } else if (targetPiece.value === 1) {
@@ -453,7 +476,7 @@ function legalMove(targetPiece) {
     // console.log(min);
     for (let i = max + 1; i < range + 1; i++) {
       // console.log(i);
-      let possibleMove = row - [i] + column;
+      let possibleMove = row - i + column;
       let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
       targetSquare.classList.add("highlight");
     }
@@ -461,44 +484,78 @@ function legalMove(targetPiece) {
   if (targetPiece.value === 3) {
     // console.log("horse");
     let moveUpCheck = [];
+    let moveDownCheck = [];
     let knightMovement = [];
+
+    //move upwards
     for (i = 1; i < 3; i++) {
-      movementUp = row - [i];
-      possibleMoveUp = row - [i] + column;
+      movementUp = row - i;
+      possibleMoveUp = row - i + column;
       moveUpCheck.push(movementUp);
-      targetSquare = document.querySelector(`.${CSS.escape(possibleMoveUp)}`);
-      targetSquare.classList.add("highlight");
+      targetSquareUp = document.querySelector(`.${CSS.escape(possibleMoveUp)}`);
+      targetSquareUp.classList.add("highlight");
     }
     let movementRight = Number(column) + 1;
     let movementLeft = Number(column) - 1;
     let lastMoveUp = moveUpCheck[1];
     let movementUpRight = lastMoveUp + movementRight.toString();
     let movementUpLeft = lastMoveUp + movementLeft.toString();
+
+    //move downwards
+    for (i = 1; i < 3; i++) {
+      movementDown = Number(row) + i;
+      possibleMoveDown = movementDown + column;
+      moveDownCheck.push(movementDown);
+      targetSquareDown = document.querySelector(
+        `.${CSS.escape(possibleMoveDown)}`
+      );
+      targetSquareDown.classList.add("highlight");
+    }
+    let lastMoveDown = moveDownCheck[1];
+    movementDownRight = lastMoveDown + movementRight.toString();
+    movementDownLeft = lastMoveDown + movementLeft.toString();
+
+    // setting left/right movements
     knightMovement.push(movementUpRight);
     knightMovement.push(movementUpLeft);
-    // console.log(knightMovement);
+    knightMovement.push(movementDownRight);
+    knightMovement.push(movementDownLeft);
     knightMovement.forEach((move, i) => {
       targetSquare = document.querySelector(
         `.${CSS.escape(knightMovement[i])}`
       );
       targetSquare.classList.add("highlight");
     });
-    // console.log(movementUpRight);
   }
 
   if (targetPiece.value === 4) {
     // console.log("bishop");
+    let range = 8 - column;
     let moves = [];
     let min = column;
     let max = 8 - min;
+    let minRight = min;
+    let maxLeft = 8 - range;
+    let goLeft = maxLeft;
 
+    //movement up-right
     for (let i = 0; i < max; i++) {
-      movementUp = row - [i];
-      movementRight = Number(min++);
+      movementUp = row - i;
+      movementRight = Number(minRight++);
       movementUpRight = movementUp + movementRight.toString();
       // console.log(movementUpRight);
       moves.push(movementUpRight);
       // console.log(moves);
+    }
+
+    // movement up-left
+    for (let i = 0; i < maxLeft + 1; i++) {
+      movementUpp = row - i;
+      movementLeft = Number(goLeft--);
+      movementUpLeft = movementUpp + movementLeft.toString();
+      console.log(movementLeft);
+      console.log(movementUpLeft);
+      moves.push(movementUpLeft);
     }
 
     moves.forEach((move, i) => {
@@ -507,3 +564,5 @@ function legalMove(targetPiece) {
     });
   }
 }
+
+function capturePiece(targetPiece) {}
