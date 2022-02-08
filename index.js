@@ -1,6 +1,6 @@
 const chessboard = document.querySelector(".chess-board");
 const cells = document.querySelectorAll(".cell");
-// .forEach((cell) => cell.addEventListener('click', handleCellClick))
+
 let whiteTurn = true;
 let state = false;
 let board = [
@@ -19,16 +19,6 @@ const blackPawnStart = board[1];
 const whitePawnStart = board[6];
 const lastRow = board[7];
 
-// console.log(blackPawnStart);
-// console.log(whitePawnStart);
-
-// const coordinates = Array.from(cells);
-// console.log(coordinates);
-
-// coordinates.forEach((coordinate, i) => {
-//   // console.log(coordinate);
-// });
-
 class Piece {
   constructor(coordinate, isWhite, type) {
     this.coordinate = coordinate;
@@ -36,29 +26,7 @@ class Piece {
     this.type = type;
   }
 
-  // checkLegalMove(piece.target.value) {
-  //   console.log("test");
-  // }
-
   createPiece(cell, piece, isWhite) {
-    // if (piece === 'pawn' && isWhite === false) {
-    //   let blackPawn = new Pawn(this.coordinate, false)
-    //   console.log(blackPawn)
-    //   const newP = document.createElement('i')
-    //   newP.className = `${blackPawn.type}`
-    //   cell.appendChild(newP)
-    // } else if (piece === 'pawn' && isWhite === true) {
-    //   let whitePawn = new Pawn(this.coordinate, true)
-    //   const newP = document.createElement('i')
-    //   newP.className = `${whitePawn.type}`
-    //   cell.appendChild(newP)
-    // } else if (piece === 'rook' && isWhite === false) {
-    //   let whiteRook = new Rook(this.coordinate, false)
-    //   const newP = document.createElement('i')
-    //   newP.className = `${whiteRook.type}`
-    //   cell.appendChild(newP)
-    // }
-
     switch (piece) {
       case "pawn":
         if (isWhite === false) {
@@ -160,10 +128,6 @@ class Pawn extends Piece {
     super(coordinate, isWhite);
     this.type = isWhite ? `fas fa-chess-pawn white` : `fas fa-chess-pawn`;
   }
-
-  // displayPiece() {
-  //   coordinates[this.coordi;nate].innerHTML = this.type;
-  // }
 }
 
 class Rook extends Piece {
@@ -205,7 +169,6 @@ function config() {
   let squares = 0;
   for (let row = 0; row < board.length; row++) {
     const rank = board[row];
-    // console.log(rank);
     for (let column = 0; column < rank.length; column++) {
       const piece = rank[column];
 
@@ -217,26 +180,16 @@ function config() {
       } else {
         cell.classList.add("dark-cell");
       }
-      // cell.classList.add(`${row}${column}`);
       cell.setAttribute("data-row", row);
       cell.setAttribute("data-column", column);
 
       chessboard.appendChild(cell);
       //black piece
       if (board[row][column] === "bp") {
-        // let blackRook = new Rook([row][column], false);
-        // cell.innerHTML = this.type;
-
-        // let blackPawnElement = blackPawn.createPawn(cell)
-        // let blackPawn = new Pawn([row][column], false);
-        // console.log(created)
         let bp = new Piece();
         bp.createPiece(cell, "pawn", false);
       }
       if (board[row][column] === "br") {
-        // let blackRook = new Pawn([row][column], false);
-        // let blackRookElement = blackRook.createPawn(cell)
-        // console.log(created)
         let br = new Piece();
         br.createPiece(cell, "rook", false);
       }
@@ -259,10 +212,6 @@ function config() {
 
       //white piece
       if (board[row][column] === "wp") {
-        // let whitePawn = new Pawn([row][column], true);
-        //
-        // console.log(cell)
-        // let created = whitePawn.createPawn(cell)
         let wp = new Piece();
         wp.createPiece(cell, "pawn", true);
       }
@@ -289,37 +238,14 @@ function config() {
     }
   }
 }
-// const pawn = document.querySelectorAll(".fa-chess-pawn");
-// pawn.forEach((pawn, i) => {
-//   pawn.addEventListener(handleClick(pawn));
-// });
-// console.log(pawn);
-
-//UNCOMMENT IF NEED TO RESET
-/////////////////////////////////////////////////////////
-// const pieceNames = ["pawn", "king", "queen", "rook", "bishop", "knight"];
-
-// function addEventHandlers() {
-//   for (let i = 0; i < pieceNames.length; i++) {
-//     let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
-//     // console.log(pieces);
-//     pieces.forEach((piece, i) => {
-//       piece.style.cursor = "pointer";
-//       piece.addEventListener("click", handleClick);
-//     });
-//   }
-// }
-////////////////////////////////////////////////////
 
 const pieceNames = ["pawn", "king", "queen", "rook", "bishop", "knight"];
 
 function addEventHandlers() {
   for (let i = 0; i < pieceNames.length; i++) {
     let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
-    // console.log(pieces);
     pieces.forEach((piece, i) => {
       piece.style.cursor = "pointer";
-      // piece.addEventListener("click", handleClick);
     });
 
     let squares = document.querySelectorAll(".cell");
@@ -377,51 +303,6 @@ function handleClick(piece) {
   }
 }
 
-////// UNCOMMENT IF NEED TO RESET
-// //////////////////////////////////////////////////////////
-// function handleClick(piece) {
-//   let squares = [...document.querySelectorAll(".cell")].filter(
-//     (square) => !square.querySelector(`i`)
-//   );
-//   squares.forEach((square, i) => {
-//     square.style.cursor = "pointer";
-//     square.addEventListener("click", handleClick, { once: true });
-//   });
-//   if (!state) {
-//     state = true;
-//     targetPiece = piece.target;
-//     x = targetPiece.parentNode.dataset.row;
-//     y = targetPiece.parentNode.dataset.column;
-
-//     boardItem = board[x][y];
-//     console.log(boardItem);
-//     // let squares = [...document.querySelectorAll(".cell")].filter(
-//     //   (square) => !square.querySelector(`i`)
-//     // );
-//     // squares.forEach((square, i) => {
-//     //   square.style.cursor = "pointer";
-//     //   // square.addEventListener("click", test);
-//     // });
-//     legalMove(targetPiece);
-//     console.log(x, y);
-//     console.log(board);
-//   } else {
-//     state = false;
-//     board[x][y] = " ";
-//     let x2 = piece.target.parentNode.dataset.row;
-//     let y2 = piece.target.parentNode.dataset.column;
-//     console.log(x2, y2);
-//     board[x2][y2] = boardItem;
-
-//     console.log(board);
-//   }
-// }
-
-// function test() {
-//   console.log("test");
-// }
-////////////////////////////////////////////////////////////////////////////////
-
 function legalMove(targetPiece) {
   let row = targetPiece.parentNode.dataset.row;
   let column = targetPiece.parentNode.dataset.column;
@@ -463,11 +344,6 @@ function legalMove(targetPiece) {
         targetSquare.classList.add("highlight");
       }
     }
-
-    // } else if (targetPiece.value === 1) {
-    // let possibleMove = row - 1 + column;
-    // let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
-    // targetSquare.classList.add("highlight");
   }
   if (targetPiece.value === 2) {
     let minUp = row; //piece location in 'row'
@@ -531,8 +407,6 @@ function legalMove(targetPiece) {
       movementUp = row - i;
       possibleMoveUp = row - i + column;
       moveUpCheck.push(movementUp);
-      // targetSquareUp = document.querySelector(`.${CSS.escape(possibleMoveUp)}`);
-      // targetSquareUp.classList.add("highlight");
     }
     let movementRight = Number(column) + 1;
     let movementLeft = Number(column) - 1;
@@ -545,10 +419,6 @@ function legalMove(targetPiece) {
       movementDown = Number(row) + i;
       possibleMoveDown = movementDown + column;
       moveDownCheck.push(movementDown);
-      //   targetSquareDown = document.querySelector(
-      //     `.${CSS.escape(possibleMoveDown)}`
-      //   );
-      //   targetSquareDown.classList.add("highlight");
     }
     let lastMoveDown = moveDownCheck[1];
     movementDownRight = lastMoveDown + movementRight.toString();
@@ -587,6 +457,8 @@ function legalMove(targetPiece) {
     knightMovement.push(movementUpLeft);
     knightMovement.push(movementDownRight);
     knightMovement.push(movementDownLeft);
+
+    // adding highlight
     knightMovement.forEach((move, i) => {
       targetSquare = document.querySelector(
         `.${CSS.escape(knightMovement[i])}`
@@ -596,36 +468,96 @@ function legalMove(targetPiece) {
   }
 
   if (targetPiece.value === 4) {
-    // console.log("bishop");
-    let range = 8 - column;
     let moves = [];
-    let min = column;
-    let max = 8 - min;
-    let minRight = min;
-    let maxLeft = 8 - range;
-    let goLeft = maxLeft;
+    let rangeRight = 7 - column;
+    let maxMovementUpRight;
+    let rangeLeft = column;
+    let maxMovementUpLeft;
+    let rangeDown = 7 - row;
+    let maxMovementDownRight;
+    let maxMovementDownLeft;
 
     //movement up-right
-    for (let i = 0; i < max; i++) {
-      movementUp = row - i;
-      movementRight = Number(minRight++);
-      movementUpRight = movementUp + movementRight.toString();
-      moves.push(movementUpRight);
+    if (rangeRight > row) {
+      maxMovementUpRight = Number(row) + 1;
+      for (let i = 1; i < maxMovementUpRight; i++) {
+        movementUpR = row - i;
+        moveUpRight = Number(column) + Number(i);
+        movementUpRight = movementUpR + moveUpRight.toString();
+        moves.push(movementUpRight);
+      }
+    } else if (rangeRight < row) {
+      maxMovementUpRight = Number(rangeRight) + 1;
+      for (let i = 1; i < maxMovementUpRight; i++) {
+        movementUpR = row - i;
+        moveUpRight = Number(column) + Number(i);
+        movementUpRight = movementUpR + moveUpRight.toString();
+        moves.push(movementUpRight);
+      }
     }
 
-    // movement up-left
-    for (let i = 0; i < maxLeft + 1; i++) {
-      movementUpp = row - i;
-      movementLeft = Number(goLeft--);
-      movementUpLeft = movementUpp + movementLeft.toString();
-      moves.push(movementUpLeft);
+    //movement up-left
+    if (rangeLeft < row) {
+      maxMovementUpLeft = Number(column) + 1;
+      for (let i = 1; i < maxMovementUpLeft; i++) {
+        movementUpL = row - i;
+        moveUpLeft = column - i;
+        movementUpLeft = movementUpL + moveUpLeft.toString();
+        moves.push(movementUpLeft);
+        // console.log(movementUpLeft);
+      }
+    } else if (rangeLeft > row) {
+      maxMovementUpLeft = Number(row) + 1;
+      for (let i = 1; i < maxMovementUpLeft; i++) {
+        movementUpL = row - i;
+        moveUpLeft = column - i;
+        movementUpLeft = movementUpL + moveUpLeft.toString();
+        moves.push(movementUpLeft);
+      }
     }
 
+    //movement down-right
+    if (rangeDown > rangeRight) {
+      maxMovementDownRight = Number(rangeRight) + 1;
+      for (let i = 1; i < maxMovementDownRight; i++) {
+        movementDownR = Number(row) + Number(i);
+        moveDownRight = Number(column) + Number(i);
+        movementDownRight = movementDownR + moveDownRight.toString();
+        moves.push(movementDownRight);
+      }
+    } else if (rangeDown < rangeRight) {
+      maxMovementDownRight = Number(rangeDown) + 1;
+      for (let i = 1; i < maxMovementDownRight; i++) {
+        movementDownR = Number(row) + Number(i);
+        moveDownRight = Number(column) + Number(i);
+        movementDownRight = movementDownR + moveDownRight.toString();
+        moves.push(movementDownRight);
+      }
+    }
+
+    //movement down-left
+    if (rangeDown > rangeLeft) {
+      maxMovementDownLeft = Number(rangeLeft) + 1;
+      for (let i = 1; i < maxMovementDownLeft; i++) {
+        movementDownL = Number(row) + Number(i);
+        moveDownLeft = column - i;
+        movementDownLeft = movementDownL + moveDownLeft.toString();
+        moves.push(movementDownLeft);
+      }
+    } else if (rangeDown < rangeLeft) {
+      maxMovementDownLeft = Number(rangeDown) + 1;
+      for (let i = 1; i < maxMovementDownLeft; i++) {
+        movementDownL = Number(row) + Number(i);
+        moveDownLeft = column - i;
+        movementDownLeft = movementDownL + moveDownLeft.toString();
+        moves.push(movementDownLeft);
+      }
+    }
+
+    //highlight all moves
     moves.forEach((move, i) => {
       targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
       targetSquare.classList.add("highlight");
     });
   }
 }
-
-function capturePiece(targetPiece) {}
