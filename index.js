@@ -211,12 +211,13 @@ function config() {
 
       const cell = document.createElement("div");
       cell.classList.add("cell");
+      cell.classList.add(`${row}${column}`);
       if (row % 2 === column % 2) {
         cell.classList.add("light-cell");
       } else {
         cell.classList.add("dark-cell");
       }
-      cell.classList.add(`${row}${column}`);
+      // cell.classList.add(`${row}${column}`);
       cell.setAttribute("data-row", row);
       cell.setAttribute("data-column", column);
 
@@ -469,15 +470,51 @@ function legalMove(targetPiece) {
     // targetSquare.classList.add("highlight");
   }
   if (targetPiece.value === 2) {
-    let min = row; //piece location in 'row'
-    let max = 0; //end of board going up
+    let minUp = row; //piece location in 'row'
+    let minDown = row;
+    const maxUp = 0; //end of board going up
+    const maxDown = 7;
+    const maxRight = 7;
+    const maxLeft = 0;
+    let minLeft = column;
+    let minRight = column; //piece location in 'column'
 
-    let range = min - max;
-    // console.log(min);
-    for (let i = max + 1; i < range + 1; i++) {
-      // console.log(i);
-      let possibleMove = row - i + column;
-      let targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+    // movementUp
+    let rangeUp = minUp - maxUp;
+    for (let i = maxUp + 1; i < rangeUp + 1; i++) {
+      let possibleMoveUp = row - i + column;
+      let targetSquare = document.querySelector(
+        `.${CSS.escape(possibleMoveUp)}`
+      );
+      targetSquare.classList.add("highlight");
+    }
+
+    //movementRight
+    let rangeRight = maxRight - minRight;
+    for (let i = 0; i < rangeRight + 1; i++) {
+      movementRight = Number(column) + Number(i);
+      possibleMoveRight = row + movementRight;
+      targetSquare = document.querySelector(
+        `.${CSS.escape(possibleMoveRight)}`
+      );
+      targetSquare.classList.add("highlight");
+    }
+
+    //movementLeft
+    let rangeLeft = minLeft - maxLeft;
+    for (let i = 0; i < rangeLeft + 1; i++) {
+      movementLeft = Number(column) - i;
+      possibleMoveLeft = row + movementLeft;
+      targetSquare = document.querySelector(`.${CSS.escape(possibleMoveLeft)}`);
+      targetSquare.classList.add("highlight");
+    }
+
+    //movementDown
+    let rangeDown = maxDown - minDown;
+    for (let i = 0; i < rangeDown + 1; i++) {
+      movementDown = Number(row) + Number(i);
+      possibleMoveDown = movementDown + column;
+      targetSquare = document.querySelector(`.${CSS.escape(possibleMoveDown)}`);
       targetSquare.classList.add("highlight");
     }
   }
@@ -485,6 +522,8 @@ function legalMove(targetPiece) {
     // console.log("horse");
     let moveUpCheck = [];
     let moveDownCheck = [];
+    let moveRightCheck = [];
+    let moveLeftCheck = [];
     let knightMovement = [];
 
     //move upwards
@@ -492,8 +531,8 @@ function legalMove(targetPiece) {
       movementUp = row - i;
       possibleMoveUp = row - i + column;
       moveUpCheck.push(movementUp);
-      targetSquareUp = document.querySelector(`.${CSS.escape(possibleMoveUp)}`);
-      targetSquareUp.classList.add("highlight");
+      // targetSquareUp = document.querySelector(`.${CSS.escape(possibleMoveUp)}`);
+      // targetSquareUp.classList.add("highlight");
     }
     let movementRight = Number(column) + 1;
     let movementLeft = Number(column) - 1;
@@ -506,16 +545,44 @@ function legalMove(targetPiece) {
       movementDown = Number(row) + i;
       possibleMoveDown = movementDown + column;
       moveDownCheck.push(movementDown);
-      targetSquareDown = document.querySelector(
-        `.${CSS.escape(possibleMoveDown)}`
-      );
-      targetSquareDown.classList.add("highlight");
+      //   targetSquareDown = document.querySelector(
+      //     `.${CSS.escape(possibleMoveDown)}`
+      //   );
+      //   targetSquareDown.classList.add("highlight");
     }
     let lastMoveDown = moveDownCheck[1];
     movementDownRight = lastMoveDown + movementRight.toString();
     movementDownLeft = lastMoveDown + movementLeft.toString();
 
-    // setting left/right movements
+    //moveSideRight
+    for (i = 1; i < 3; i++) {
+      movementSideRight = Number(column) + i;
+      possibleMoveSideRight = row + movementSideRight;
+      moveRightCheck.push(movementSideRight);
+    }
+    let moveRSideRowUp = row - 1;
+    let moveRSideRowDown = Number(row) + 1;
+    let lastmoveRight = moveRightCheck[1];
+    movementRightUp = moveRSideRowUp.toString() + lastmoveRight;
+    movementRightDown = moveRSideRowDown.toString() + lastmoveRight;
+
+    //moveSideLeft
+    for (i = 1; i < 3; i++) {
+      movementSideLeft = column - i;
+      possibleMoveSideLeft = row + movementSideLeft;
+      moveLeftCheck.push(movementSideLeft);
+    }
+    let moveLSideRowUp = row - 1;
+    let moveLSideRowDown = Number(row) + 1;
+    let lastmoveLeft = moveLeftCheck[1];
+    movementLeftUp = moveLSideRowUp.toString() + lastmoveLeft;
+    movementLeftDown = moveLSideRowDown.toString() + lastmoveLeft;
+
+    // setting left/right/up/down movements
+    knightMovement.push(movementLeftUp);
+    knightMovement.push(movementLeftDown);
+    knightMovement.push(movementRightUp);
+    knightMovement.push(movementRightDown);
     knightMovement.push(movementUpRight);
     knightMovement.push(movementUpLeft);
     knightMovement.push(movementDownRight);
@@ -543,9 +610,7 @@ function legalMove(targetPiece) {
       movementUp = row - i;
       movementRight = Number(minRight++);
       movementUpRight = movementUp + movementRight.toString();
-      // console.log(movementUpRight);
       moves.push(movementUpRight);
-      // console.log(moves);
     }
 
     // movement up-left
@@ -553,8 +618,6 @@ function legalMove(targetPiece) {
       movementUpp = row - i;
       movementLeft = Number(goLeft--);
       movementUpLeft = movementUpp + movementLeft.toString();
-      console.log(movementLeft);
-      console.log(movementUpLeft);
       moves.push(movementUpLeft);
     }
 
