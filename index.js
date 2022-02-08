@@ -175,6 +175,7 @@ function config() {
       const cell = document.createElement("div");
       cell.classList.add("cell");
       cell.classList.add(`${row}${column}`);
+      cell.setAttribute("id", `${row}`);
       if (row % 2 === column % 2) {
         cell.classList.add("light-cell");
       } else {
@@ -307,92 +308,110 @@ function legalMove(targetPiece) {
   let row = targetPiece.parentNode.dataset.row;
   let column = targetPiece.parentNode.dataset.column;
 
-  // let possibleMoves = [];
   if (targetPiece.value === 1) {
-    console.log(whiteTurn);
-    let possibleMoves = [];
-    if (whiteTurn === true) {
-      if (row === "6") {
-        for (i = 1; i < 3; i++) {
-          let possibleMove = row - i + column;
-          possibleMoves.push(possibleMove);
-          let targetSquare = document.querySelector(
-            `.${CSS.escape(possibleMove)}`
-          );
-          targetSquare.classList.add("highlight");
-        }
-      } else {
-        possibleMove = row - 1 + column;
-        targetSquareWhite = document.querySelector(
-          `.${CSS.escape(possibleMove)}`
-        );
-        targetSquareWhite.classList.add("highlight");
-      }
-    } else {
-      if (row === "1") {
-        for (i = 1; i < 3; i++) {
-          possibleMove = Number(row) + Number(i) + column;
-          possibleMoves.push(possibleMove);
-          targetSquareBlack = document.querySelector(
-            `.${CSS.escape(possibleMove)}`
-          );
-          targetSquareBlack.classList.add("highlight");
-        }
-      } else {
-        possibleMove = row + 1 + column;
-        targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
-        targetSquare.classList.add("highlight");
-      }
-    }
+    let moves = [];
+    let pawnIsWhite = true;
+    let squareIDWhiteStart = "6";
+    let squares = document.querySelectorAll(
+      `#${CSS.escape(squareIDWhiteStart)}`
+    );
+    let squareChildNode = [];
+    squares.forEach((square) => {
+      squareChildNode.push(square.firstChild);
+    });
+
+    console.log(squareChildNode);
   }
+  // if (targetPiece.value === 1) {
+  //   let possibleMoves = [];
+  //   if (whiteTurn === true) {
+  //     if (row === "6") {
+  //       for (i = 1; i < 3; i++) {
+  //         let possibleMove = row - i + column;
+  //         possibleMoves.push(possibleMove);
+  //         let targetSquare = document.querySelector(
+  //           `.${CSS.escape(possibleMove)}`
+  //         );
+  //         targetSquare.classList.add("highlight");
+  //       }
+  //     } else {
+  //       possibleMove = row - 1 + column;
+  //       targetSquareWhite = document.querySelector(
+  //         `.${CSS.escape(possibleMove)}`
+  //       );
+  //       targetSquareWhite.classList.add("highlight");
+  //     }
+  //   } else {
+  //     if (row === "1") {
+  //       for (i = 1; i < 3; i++) {
+  //         possibleMove = Number(row) + Number(i) + column;
+  //         possibleMoves.push(possibleMove);
+  //         targetSquareBlack = document.querySelector(
+  //           `.${CSS.escape(possibleMove)}`
+  //         );
+  //         targetSquareBlack.classList.add("highlight");
+  //       }
+  //     } else {
+  //       possibleMove = row + 1 + column;
+  //       targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+  //       targetSquare.classList.add("highlight");
+  //     }
+  //   }
+  // }
+
   if (targetPiece.value === 2) {
-    let minUp = row; //piece location in 'row'
+    let moves = [];
+    let minUp = row;
     let minDown = row;
-    const maxUp = 0; //end of board going up
     const maxDown = 7;
     const maxRight = 7;
-    const maxLeft = 0;
     let minLeft = column;
-    let minRight = column; //piece location in 'column'
+    let minRight = column;
 
-    // movementUp
-    let rangeUp = minUp - maxUp;
-    for (let i = maxUp + 1; i < rangeUp + 1; i++) {
-      let possibleMoveUp = row - i + column;
-      let targetSquare = document.querySelector(
-        `.${CSS.escape(possibleMoveUp)}`
-      );
-      targetSquare.classList.add("highlight");
+    //movementUp
+    let rangeUp = Number(minUp) + 1;
+    for (let i = 1; i < rangeUp; i++) {
+      movementUp = row - i;
+      possibleMoveUp = movementUp + column;
+      if (movementUp >= 0) {
+        moves.push(possibleMoveUp);
+      }
     }
 
     //movementRight
-    let rangeRight = maxRight - minRight;
-    for (let i = 0; i < rangeRight + 1; i++) {
+    let rangeRight = maxRight - minRight + Number(1);
+    for (let i = 1; i < rangeRight; i++) {
       movementRight = Number(column) + Number(i);
       possibleMoveRight = row + movementRight;
-      targetSquare = document.querySelector(
-        `.${CSS.escape(possibleMoveRight)}`
-      );
-      targetSquare.classList.add("highlight");
+      if (movementRight <= 7) {
+        moves.push(possibleMoveRight);
+      }
     }
 
     //movementLeft
-    let rangeLeft = minLeft - maxLeft;
-    for (let i = 0; i < rangeLeft + 1; i++) {
+    let rangeLeft = Number(minLeft) + 1;
+    for (let i = 1; i < rangeLeft; i++) {
       movementLeft = Number(column) - i;
       possibleMoveLeft = row + movementLeft;
-      targetSquare = document.querySelector(`.${CSS.escape(possibleMoveLeft)}`);
-      targetSquare.classList.add("highlight");
+      if (movementLeft >= 0) {
+        moves.push(possibleMoveLeft);
+      }
     }
 
     //movementDown
-    let rangeDown = maxDown - minDown;
-    for (let i = 0; i < rangeDown + 1; i++) {
+    let rangeDown = maxDown - minDown + Number(1);
+    for (let i = 1; i < rangeDown; i++) {
       movementDown = Number(row) + Number(i);
       possibleMoveDown = movementDown + column;
-      targetSquare = document.querySelector(`.${CSS.escape(possibleMoveDown)}`);
-      targetSquare.classList.add("highlight");
+      if (movementDown <= 7) {
+        moves.push(possibleMoveDown);
+      }
     }
+
+    moves.forEach((move, i) => {
+      targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
+      targetSquare.classList.add("highlight");
+    });
   }
   if (targetPiece.value === 3) {
     // console.log("horse");
@@ -484,7 +503,9 @@ function legalMove(targetPiece) {
         movementUpR = row - i;
         moveUpRight = Number(column) + Number(i);
         movementUpRight = movementUpR + moveUpRight.toString();
-        moves.push(movementUpRight);
+        if (movementUpR >= 0 && moveUpRight <= 7) {
+          moves.push(movementUpRight);
+        }
       }
     } else if (rangeRight < row) {
       maxMovementUpRight = Number(rangeRight) + 1;
@@ -492,7 +513,19 @@ function legalMove(targetPiece) {
         movementUpR = row - i;
         moveUpRight = Number(column) + Number(i);
         movementUpRight = movementUpR + moveUpRight.toString();
-        moves.push(movementUpRight);
+        if (movementUpR >= 0 && moveUpRight <= 7) {
+          moves.push(movementUpRight);
+        }
+      }
+    } else {
+      maxMovementUpRight = Number(row) + 1;
+      for (let i = 1; i < maxMovementUpRight; i++) {
+        movementUpR = row - i;
+        moveUpRight = Number(column) + Number(i);
+        movementUpRight = movementUpR + moveUpRight.toString();
+        if (movementUpR >= 0 && moveUpRight <= 7) {
+          moves.push(movementUpRight);
+        }
       }
     }
 
@@ -503,8 +536,9 @@ function legalMove(targetPiece) {
         movementUpL = row - i;
         moveUpLeft = column - i;
         movementUpLeft = movementUpL + moveUpLeft.toString();
-        moves.push(movementUpLeft);
-        // console.log(movementUpLeft);
+        if (movementUpL >= 0 && moveUpLeft >= 0 && moveUpLeft <= 7) {
+          moves.push(movementUpLeft);
+        }
       }
     } else if (rangeLeft > row) {
       maxMovementUpLeft = Number(row) + 1;
@@ -512,7 +546,19 @@ function legalMove(targetPiece) {
         movementUpL = row - i;
         moveUpLeft = column - i;
         movementUpLeft = movementUpL + moveUpLeft.toString();
-        moves.push(movementUpLeft);
+        if (movementUpL >= 0 && moveUpLeft >= 0 && moveUpLeft <= 7) {
+          moves.push(movementUpLeft);
+        }
+      }
+    } else {
+      maxMovementUpLeft = Number(column) + 1;
+      for (let i = 1; i < maxMovementUpLeft; i++) {
+        movementUpL = row - i;
+        moveUpLeft = column - i;
+        movementUpLeft = movementUpL + moveUpLeft.toString();
+        if (movementUpL >= 0 && moveUpLeft >= 0 && moveUpLeft <= 7) {
+          moves.push(movementUpLeft);
+        }
       }
     }
 
@@ -523,7 +569,9 @@ function legalMove(targetPiece) {
         movementDownR = Number(row) + Number(i);
         moveDownRight = Number(column) + Number(i);
         movementDownRight = movementDownR + moveDownRight.toString();
-        moves.push(movementDownRight);
+        if (movementDownR <= 7 && moveDownRight <= 7) {
+          moves.push(movementDownRight);
+        }
       }
     } else if (rangeDown < rangeRight) {
       maxMovementDownRight = Number(rangeDown) + 1;
@@ -531,7 +579,19 @@ function legalMove(targetPiece) {
         movementDownR = Number(row) + Number(i);
         moveDownRight = Number(column) + Number(i);
         movementDownRight = movementDownR + moveDownRight.toString();
-        moves.push(movementDownRight);
+        if (movementDownR <= 7 && moveDownRight <= 7) {
+          moves.push(movementDownRight);
+        }
+      }
+    } else {
+      maxMovementDownRight = Number(rangeRight) + 1;
+      for (let i = 1; i < maxMovementDownRight; i++) {
+        movementDownR = Number(row) + Number(i);
+        moveDownRight = Number(column) + Number(i);
+        movementDownRight = movementDownR + moveDownRight.toString();
+        if (movementDownR <= 7 && moveDownRight <= 7) {
+          moves.push(movementDownRight);
+        }
       }
     }
 
@@ -542,7 +602,9 @@ function legalMove(targetPiece) {
         movementDownL = Number(row) + Number(i);
         moveDownLeft = column - i;
         movementDownLeft = movementDownL + moveDownLeft.toString();
-        moves.push(movementDownLeft);
+        if (movementDownL <= 7 && moveDownLeft >= 0) {
+          moves.push(movementDownLeft);
+        }
       }
     } else if (rangeDown < rangeLeft) {
       maxMovementDownLeft = Number(rangeDown) + 1;
@@ -550,8 +612,256 @@ function legalMove(targetPiece) {
         movementDownL = Number(row) + Number(i);
         moveDownLeft = column - i;
         movementDownLeft = movementDownL + moveDownLeft.toString();
-        moves.push(movementDownLeft);
+        if (movementDownL <= 7 && moveDownLeft >= 0) {
+          moves.push(movementDownLeft);
+        }
       }
+    } else {
+      maxMovementDownLeft = Number(rangeLeft) + 1;
+      for (let i = 1; i < maxMovementDownLeft; i++) {
+        movementDownL = Number(row) + Number(i);
+        moveDownLeft = column - i;
+        movementDownLeft = movementDownL + moveDownLeft.toString();
+        if (movementDownL <= 7 && moveDownLeft >= 0) {
+          moves.push(movementDownLeft);
+        }
+      }
+    }
+
+    //highlight all moves
+    moves.forEach((move, i) => {
+      targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
+      targetSquare.classList.add("highlight");
+    });
+  }
+
+  if (targetPiece.value === 5) {
+    //STRAIGHTS
+    let moves = [];
+    let minUp = row;
+    let minDown = row;
+    const maxDown = 7;
+    const maxRight = 7;
+    let minLeft = column;
+    let minRight = column;
+
+    //movementUp
+    let rangeUp = Number(minUp) + 1;
+    for (let i = 1; i < rangeUp; i++) {
+      movementUp = row - i;
+      possibleMoveUp = movementUp + column;
+      if (movementUp >= 0) {
+        moves.push(possibleMoveUp);
+      }
+    }
+
+    //movementRight
+    let rangeRight = maxRight - minRight + Number(1);
+    for (let i = 1; i < rangeRight; i++) {
+      movementRight = Number(column) + Number(i);
+      possibleMoveRight = row + movementRight;
+      if (movementRight <= 7) {
+        moves.push(possibleMoveRight);
+      }
+    }
+
+    //movementLeft
+    let rangeLeft = Number(minLeft) + 1;
+    for (let i = 1; i < rangeLeft; i++) {
+      movementLeft = Number(column) - i;
+      possibleMoveLeft = row + movementLeft;
+      if (movementLeft >= 0) {
+        moves.push(possibleMoveLeft);
+      }
+    }
+
+    //movementDown
+    let rangeDown = maxDown - minDown + Number(1);
+    for (let i = 1; i < rangeDown; i++) {
+      movementDown = Number(row) + Number(i);
+      possibleMoveDown = movementDown + column;
+      if (movementDown <= 7) {
+        moves.push(possibleMoveDown);
+      }
+    }
+
+    //DIAGONALS
+    let rangeRightD = 7 - column;
+    let maxMovementUpRight;
+    let rangeLeftD = column;
+    let maxMovementUpLeft;
+    let rangeDownD = 7 - row;
+    let maxMovementDownRight;
+    let maxMovementDownLeft;
+
+    //movement up-right
+    if (rangeRightD > row) {
+      maxMovementUpRight = Number(row) + 1;
+      for (let i = 1; i < maxMovementUpRight; i++) {
+        movementUpR = row - i;
+        moveUpRight = Number(column) + Number(i);
+        movementUpRight = movementUpR + moveUpRight.toString();
+        if (movementUpR >= 0 && moveUpRight <= 7) {
+          moves.push(movementUpRight);
+        }
+      }
+    } else if (rangeRightD < row) {
+      maxMovementUpRight = Number(rangeRight);
+      for (let i = 1; i < maxMovementUpRight; i++) {
+        movementUpR = row - i;
+        moveUpRight = Number(column) + Number(i);
+        movementUpRight = movementUpR + moveUpRight.toString();
+        if (movementUpR >= 0 && moveUpRight <= 7) {
+          moves.push(movementUpRight);
+        }
+      }
+    } else {
+      maxMovementUpRight = Number(row) + 1;
+      for (let i = 1; i < maxMovementUpRight; i++) {
+        movementUpR = row - i;
+        moveUpRight = Number(column) + Number(i);
+        movementUpRight = movementUpR + moveUpRight.toString();
+        if (movementUpR >= 0 && moveUpRight <= 7) {
+          moves.push(movementUpRight);
+        }
+      }
+    }
+
+    //movement up-left
+    if (rangeLeft < row) {
+      maxMovementUpLeft = Number(column) + 1;
+      for (let i = 1; i < maxMovementUpLeft; i++) {
+        movementUpL = row - i;
+        moveUpLeft = column - i;
+        movementUpLeft = movementUpL + moveUpLeft.toString();
+        if (movementUpL >= 0 && moveUpLeft >= 0) {
+          moves.push(movementUpLeft);
+        }
+      }
+    } else if (rangeLeft > row) {
+      maxMovementUpLeft = Number(row) + 1;
+      for (let i = 1; i < maxMovementUpLeft; i++) {
+        movementUpL = row - i;
+        moveUpLeft = column - i;
+        movementUpLeft = movementUpL + moveUpLeft.toString();
+        if (movementUpL >= 0 && moveUpLeft >= 0) {
+          moves.push(movementUpLeft);
+        }
+      }
+    } else {
+      maxMovementUpLeft = Number(column) + 1;
+      for (let i = 1; i < maxMovementUpLeft; i++) {
+        movementUpL = row - i;
+        moveUpLeft = column - i;
+        movementUpLeft = movementUpL + moveUpLeft.toString();
+        if (movementUpL >= 0 && moveUpLeft >= 0) {
+          moves.push(movementUpLeft);
+        }
+      }
+    }
+
+    //movement down-right
+    if (rangeDown > rangeRight) {
+      maxMovementDownRight = Number(rangeRight);
+      for (let i = 1; i < maxMovementDownRight; i++) {
+        movementDownR = Number(row) + Number(i);
+        moveDownRight = Number(column) + Number(i);
+        movementDownRight = movementDownR + moveDownRight.toString();
+        if (movementDownR <= 7 && moveDownRight <= 7) {
+          moves.push(movementDownRight);
+        }
+      }
+    } else if (rangeDown < rangeRight) {
+      maxMovementDownRight = Number(rangeDown);
+      for (let i = 1; i < maxMovementDownRight; i++) {
+        movementDownR = Number(row) + Number(i);
+        moveDownRight = Number(column) + Number(i);
+        movementDownRight = movementDownR + moveDownRight.toString();
+        if (movementDownR <= 7 && moveDownRight <= 7) {
+          moves.push(movementDownRight);
+        }
+      }
+    } else {
+      maxMovementDownRight = Number(rangeRight);
+      for (let i = 1; i < maxMovementDownRight; i++) {
+        movementDownR = Number(row) + Number(i);
+        moveDownRight = Number(column) + Number(i);
+        movementDownRight = movementDownR + moveDownRight.toString();
+        if (movementDownR <= 7 && moveDownRight <= 7) {
+          moves.push(movementDownRight);
+        }
+      }
+    }
+
+    //movement down-left
+    if (rangeDown > rangeLeft) {
+      maxMovementDownLeft = Number(rangeLeft);
+      for (let i = 1; i < maxMovementDownLeft; i++) {
+        movementDownL = Number(row) + Number(i);
+        moveDownLeft = column - i;
+        movementDownLeft = movementDownL + moveDownLeft.toString();
+        if (movementDownL <= 7 && moveDownLeft >= 0) {
+          moves.push(movementDownLeft);
+        }
+      }
+    } else if (rangeDown < rangeLeft) {
+      maxMovementDownLeft = Number(rangeDown);
+      for (let i = 1; i < maxMovementDownLeft; i++) {
+        movementDownL = Number(row) + Number(i);
+        moveDownLeft = column - i;
+        movementDownLeft = movementDownL + moveDownLeft.toString();
+        if (movementDownL <= 7 && moveDownLeft >= 0) {
+          moves.push(movementDownLeft);
+        }
+      }
+    } else {
+      maxMovementDownLeft = Number(rangeLeft);
+      for (let i = 1; i < maxMovementDownLeft; i++) {
+        movementDownL = Number(row) + Number(i);
+        moveDownLeft = column - i;
+        movementDownLeft = movementDownL + moveDownLeft.toString();
+        if (movementDownL <= 7 && moveDownLeft >= 0) {
+          moves.push(movementDownLeft);
+        }
+      }
+    }
+
+    //highlight all moves
+    moves.forEach((move, i) => {
+      targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
+      targetSquare.classList.add("highlight");
+    });
+  }
+
+  if (targetPiece.value === 6) {
+    let moves = [];
+
+    //Up
+    moveUp = row - 1;
+    movementUp = moveUp + column;
+    if (moveUp > 0) {
+      moves.push(movementUp);
+    }
+
+    //Right
+    moveRight = Number(column) + 1;
+    movementRight = row + moveRight.toString();
+    if (moveRight < 7) {
+      moves.push(movementRight);
+    }
+
+    //Left
+    moveLeft = column - 1;
+    movementLeft = row + moveLeft.toString();
+    if (moveLeft > 0) {
+      moves.push(movementLeft);
+    }
+
+    //Down
+    moveDown = Number(row) + 1;
+    movementDown = moveDown + column;
+    if (moveDown < 7) {
+      moves.push(movementDown);
     }
 
     //highlight all moves
