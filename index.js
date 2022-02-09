@@ -286,6 +286,10 @@ function handleClick(piece) {
     squares.forEach((square, i) => {
       square.classList.remove("highlight");
     });
+    let cellElements = document.querySelectorAll(".cell");
+    cellElements.forEach((cell) => {
+      cell.style.pointerEvents = "";
+    });
 
     state = false;
     board[x][y] = " ";
