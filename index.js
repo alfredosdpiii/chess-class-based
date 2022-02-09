@@ -282,6 +282,10 @@ function handleClick(piece) {
     boardItem = board[x][y];
     legalMove(targetPiece);
     storeBoard(board);
+    landingSquare.removeChild(0);
+    console.log(landingSquare);
+    console.log(landingPiece);
+    // landingSquare.removeChild(landingPiece);
   } else {
     let squares = [...document.querySelectorAll(".cell")].filter(
       (square) => !square.querySelector(`.highlight`)
@@ -289,6 +293,8 @@ function handleClick(piece) {
     squares.forEach((square, i) => {
       square.classList.remove("highlight");
     });
+
+    //reset pointer events after piece moved
     let cellElements = document.querySelectorAll(".cell");
     cellElements.forEach((cell) => {
       cell.style.pointerEvents = "";
@@ -298,11 +304,27 @@ function handleClick(piece) {
     board[x][y] = " ";
 
     landingSquare = piece.target;
-    // landingSquare.appendChild(targetPiece);
+    landingPiece = landingSquare.firstElementChild;
+    console.log(landingSquare);
+    console.log(landingPiece);
 
     let x2 = piece.target.dataset.row;
     let y2 = piece.target.dataset.column;
-    board[x2][y2] = boardItem;
+    // board[x2][y2] = boardItem;
+
+    let latestBoard = boardHistory[boardHistory.length - 1];
+    // console.log(x2, y2);
+    // console.log(latestBoard);
+    if (latestBoard[x2][y2] === " ") {
+      board[x2][y2] = boardItem;
+      landingSquare.appendChild(targetPiece);
+    } else {
+      board[x2][y2] = "";
+      board[x2][y2] = boardItem;
+      console.log(board);
+      // landingSquare.removeChild(landingPiece);
+      // landingSquare.appendChild(targetPiece);
+    }
 
     if (whiteTurn === true) {
       whiteTurn = false;
@@ -310,7 +332,7 @@ function handleClick(piece) {
       whiteTurn = true;
     }
 
-    console.log(board);
+    // console.log(board);
   }
 }
 
@@ -954,5 +976,4 @@ function storeBoard(board) {
     newBoard.push(newCellRow);
   });
   boardHistory.push(newBoard);
-  console.log(boardHistory);
 }
