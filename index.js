@@ -348,6 +348,17 @@ function legalMove(targetPiece) {
         targetSquare.classList.add("highlight");
       }
     }
+
+    let cellElements = document.querySelectorAll(".cell");
+    let nonLegalMoves = [];
+    cellElements.forEach((cell, i) => {
+      if (!cell.classList.contains("highlight")) {
+        nonLegalMoves.push(cell);
+      }
+    });
+    nonLegalMoves.forEach((move) => {
+      move.style.pointerEvents = "none";
+    });
   }
 
   if (targetPiece.value === "rook") {
