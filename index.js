@@ -14,6 +14,8 @@ let board = [
   ["wr", "wn", "wb", "wk", "wq", "wb", "wn", "wr"],
 ];
 
+let boardHistory = [];
+
 const firstRow = board[0];
 const blackPawnStart = board[1];
 const whitePawnStart = board[6];
@@ -279,6 +281,7 @@ function handleClick(piece) {
 
     boardItem = board[x][y];
     legalMove(targetPiece);
+    storeBoard(board);
   } else {
     let squares = [...document.querySelectorAll(".cell")].filter(
       (square) => !square.querySelector(`.highlight`)
@@ -295,7 +298,7 @@ function handleClick(piece) {
     board[x][y] = " ";
 
     landingSquare = piece.target;
-    landingSquare.appendChild(targetPiece);
+    // landingSquare.appendChild(targetPiece);
 
     let x2 = piece.target.dataset.row;
     let y2 = piece.target.dataset.column;
@@ -306,6 +309,8 @@ function handleClick(piece) {
     } else {
       whiteTurn = true;
     }
+
+    console.log(board);
   }
 }
 
@@ -426,9 +431,9 @@ function legalMove(targetPiece) {
         nonLegalMoves.push(cell);
       }
     });
-    nonLegalMoves.forEach((move) => {
-      move.style.pointerEvents = "none";
-    });
+    // nonLegalMoves.forEach((move) => {
+    //   move.style.pointerEvents = "none";
+    // });
   }
   if (targetPiece.value === "knight") {
     let moves = [];
@@ -918,4 +923,36 @@ function legalMove(targetPiece) {
       move.style.pointerEvents = "none";
     });
   }
+}
+
+function isOccupied(landingSquare) {
+  //check if landingSquarea is occupied by a piece
+  if (landingSquare.hasChildNodes() > 1) {
+    console.log("child");
+  } else {
+    console.log("none");
+  }
+}
+
+function capture(targetPiece, landingSquare) {
+  let targetRow = targetPiece.parentNode.dataset.row;
+  let targetColumn = targetPiece.parentNode.dataset.column;
+
+  console.log(targetPiece);
+  console.log(landingSquare);
+}
+
+function storeBoard(board) {
+  const newBoard = [];
+  board.forEach((row, rowCounter) => {
+    const boardRow = board[rowCounter];
+    const newCellRow = [];
+    boardRow.forEach((index, indexCounter) => {
+      const cellIndex = boardRow[indexCounter];
+      newCellRow.push(cellIndex);
+    });
+    newBoard.push(newCellRow);
+  });
+  boardHistory.push(newBoard);
+  console.log(boardHistory);
 }
