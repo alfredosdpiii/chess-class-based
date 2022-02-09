@@ -371,7 +371,7 @@ function legalMove(targetPiece) {
           targetPiece.removeAttribute("doubleMove");
         }
       } else {
-        possibleMove = row + 1 + column;
+        possibleMove = Number(row) + 1 + column;
         targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
         targetSquare.classList.add("highlight");
       }
