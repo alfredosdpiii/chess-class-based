@@ -403,6 +403,17 @@ function legalMove(targetPiece) {
       targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
       targetSquare.classList.add("highlight");
     });
+
+    let cellElements = document.querySelectorAll(".cell");
+    let nonLegalMoves = [];
+    cellElements.forEach((cell, i) => {
+      if (!cell.classList.contains("highlight")) {
+        nonLegalMoves.push(cell);
+      }
+    });
+    nonLegalMoves.forEach((move) => {
+      move.style.pointerEvents = "none";
+    });
   }
   if (targetPiece.value === "knight") {
     let moves = [];
@@ -461,6 +472,17 @@ function legalMove(targetPiece) {
     moves.forEach((move, i) => {
       targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
       targetSquare.classList.add("highlight");
+    });
+
+    let cellElements = document.querySelectorAll(".cell");
+    let nonLegalMoves = [];
+    cellElements.forEach((cell, i) => {
+      if (!cell.classList.contains("highlight")) {
+        nonLegalMoves.push(cell);
+      }
+    });
+    nonLegalMoves.forEach((move) => {
+      move.style.pointerEvents = "none";
     });
   }
 
@@ -610,6 +632,17 @@ function legalMove(targetPiece) {
     moves.forEach((move, i) => {
       targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
       targetSquare.classList.add("highlight");
+    });
+
+    let cellElements = document.querySelectorAll(".cell");
+    let nonLegalMoves = [];
+    cellElements.forEach((cell, i) => {
+      if (!cell.classList.contains("highlight")) {
+        nonLegalMoves.push(cell);
+      }
+    });
+    nonLegalMoves.forEach((move) => {
+      move.style.pointerEvents = "none";
     });
   }
 
@@ -809,6 +842,17 @@ function legalMove(targetPiece) {
       targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
       targetSquare.classList.add("highlight");
     });
+
+    let cellElements = document.querySelectorAll(".cell");
+    let nonLegalMoves = [];
+    cellElements.forEach((cell, i) => {
+      if (!cell.classList.contains("highlight")) {
+        nonLegalMoves.push(cell);
+      }
+    });
+    nonLegalMoves.forEach((move) => {
+      move.style.pointerEvents = "none";
+    });
   }
 
   if (targetPiece.value === "king") {
@@ -846,6 +890,17 @@ function legalMove(targetPiece) {
     moves.forEach((move, i) => {
       targetSquare = document.querySelector(`.${CSS.escape(moves[i])}`);
       targetSquare.classList.add("highlight");
+    });
+
+    let cellElements = document.querySelectorAll(".cell");
+    let nonLegalMoves = [];
+    cellElements.forEach((cell, i) => {
+      if (!cell.classList.contains("highlight")) {
+        nonLegalMoves.push(cell);
+      }
+    });
+    nonLegalMoves.forEach((move) => {
+      move.style.pointerEvents = "none";
     });
   }
 }
