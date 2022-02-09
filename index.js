@@ -34,6 +34,7 @@ class Piece {
           const pawnEl = document.createElement("i");
           pawnEl.className = `${createdPawn.type}`;
           pawnEl.value = 1;
+          pawnEl.setAttribute("doubleMove", true);
           cell.appendChild(pawnEl);
         } else {
           let createdPawn = new Pawn(this.coordinate, true);
@@ -41,6 +42,7 @@ class Piece {
           pawnEl.className = `${createdPawn.type}`;
           pawnEl.value = 1;
           pawnEl.draggable = true;
+          pawnEl.setAttribute("doubleMove", true);
           cell.appendChild(pawnEl);
         }
         break;
@@ -264,7 +266,7 @@ function handleClick(piece) {
     state = true;
 
     let squares = [...document.querySelectorAll(".cell")].filter(
-      (square) => !square.querySelector(`i`)
+      (square) => !square.querySelector(`i`),
     );
     squares.forEach((square, i) => {
       square.style.cursor = "pointer";
@@ -279,7 +281,7 @@ function handleClick(piece) {
     legalMove(targetPiece);
   } else {
     let squares = [...document.querySelectorAll(".cell")].filter(
-      (square) => !square.querySelector(`.highlight`)
+      (square) => !square.querySelector(`.highlight`),
     );
     squares.forEach((square, i) => {
       square.classList.remove("highlight");
@@ -308,56 +310,73 @@ function legalMove(targetPiece) {
   let row = targetPiece.parentNode.dataset.row;
   let column = targetPiece.parentNode.dataset.column;
 
-  if (targetPiece.value === 1) {
-    let moves = [];
-    let pawnIsWhite = true;
-    let squareIDWhiteStart = "6";
-    let squares = document.querySelectorAll(
-      `#${CSS.escape(squareIDWhiteStart)}`
-    );
-    let squareChildNode = [];
-    squares.forEach((square) => {
-      squareChildNode.push(square.firstChild);
-    });
-
-    console.log(squareChildNode);
-  }
   // if (targetPiece.value === 1) {
-  //   let possibleMoves = [];
-  //   if (whiteTurn === true) {
-  //     if (row === "6") {
+  //   let moves = [];
+  //   let pawnIsWhite = true;
+  //   let squareIDWhiteStart = "6";
+  //   let squares = document.querySelectorAll(
+  //     `#${CSS.escape(squareIDWhiteStart)}`,
+  //   );
+  //   let squareChildNode = [];
+  //
+  //   squares.forEach((square, i) => {
+  //     squareChildNode.push(square.firstChild);
+  //     if (square.parentNode.dataset.row === "6") {
   //       for (i = 1; i < 3; i++) {
   //         let possibleMove = row - i + column;
-  //         possibleMoves.push(possibleMove);
+  //         moves.push(possibleMove);
   //         let targetSquare = document.querySelector(
-  //           `.${CSS.escape(possibleMove)}`
+  //           `.${CSS.escape(possibleMove)}`,
   //         );
   //         targetSquare.classList.add("highlight");
   //       }
   //     } else {
-  //       possibleMove = row - 1 + column;
-  //       targetSquareWhite = document.querySelector(
-  //         `.${CSS.escape(possibleMove)}`
-  //       );
-  //       targetSquareWhite.classList.add("highlight");
+  //       console.log("test");
   //     }
-  //   } else {
-  //     if (row === "1") {
-  //       for (i = 1; i < 3; i++) {
-  //         possibleMove = Number(row) + Number(i) + column;
-  //         possibleMoves.push(possibleMove);
-  //         targetSquareBlack = document.querySelector(
-  //           `.${CSS.escape(possibleMove)}`
-  //         );
-  //         targetSquareBlack.classList.add("highlight");
-  //       }
-  //     } else {
-  //       possibleMove = row + 1 + column;
-  //       targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
-  //       targetSquare.classList.add("highlight");
-  //     }
-  //   }
+  //   });
+  //
+  //   console.log(squareChildNode);
   // }
+  if (targetPiece.value === 1) {
+    let possibleMoves = [];
+    if (whiteTurn === true) {
+      if (targetPiece.getAttribute("doubleMove")) {
+        for (i = 1; i < 3; i++) {
+          let possibleMove = row - i + column;
+          possibleMoves.push(possibleMove);
+          let targetSquare = document.querySelector(
+            `.${CSS.escape(possibleMove)}`,
+          );
+          targetSquare.classList.add("highlight");
+          console.log(targetPiece);
+          targetPiece.removeAttribute("doubleMove");
+        }
+      } else {
+        possibleMove = row - 1 + column;
+        console.log(possibleMove);
+        targetSquareWhite = document.querySelector(
+          `.${CSS.escape(possibleMove)}`,
+        );
+        targetSquareWhite.classList.add("highlight");
+      }
+    } else {
+      if (targetPiece.getAttribute("doubleMove")) {
+        for (i = 1; i < 3; i++) {
+          possibleMove = Number(row) + Number(i) + column;
+          possibleMoves.push(possibleMove);
+          targetSquareBlack = document.querySelector(
+            `.${CSS.escape(possibleMove)}`,
+          );
+          targetSquareBlack.classList.add("highlight");
+          targetPiece.removeAttribute("doubleMove");
+        }
+      } else {
+        possibleMove = row + 1 + column;
+        targetSquare = document.querySelector(`.${CSS.escape(possibleMove)}`);
+        targetSquare.classList.add("highlight");
+      }
+    }
+  }
 
   if (targetPiece.value === 2) {
     let moves = [];
@@ -480,7 +499,7 @@ function legalMove(targetPiece) {
     // adding highlight
     knightMovement.forEach((move, i) => {
       targetSquare = document.querySelector(
-        `.${CSS.escape(knightMovement[i])}`
+        `.${CSS.escape(knightMovement[i])}`,
       );
       targetSquare.classList.add("highlight");
     });
