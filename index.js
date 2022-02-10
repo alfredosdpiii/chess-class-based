@@ -248,12 +248,13 @@ function addEventHandlers() {
     let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
     pieces.forEach((piece, i) => {
       piece.style.cursor = "pointer";
+      piece.addEventListener("click", handleClick);
     });
 
-    let squares = document.querySelectorAll(".cell");
-    squares.forEach((square, i) => {
-      square.addEventListener("click", handleClick);
-    });
+    // squares.forEach((square, i) => {
+    // let squares = document.querySelectorAll(".cell");
+    //   square.addEventListener("click", handleClick);
+    // });
   }
 }
 
@@ -265,7 +266,7 @@ function handleClick(piece) {
     state = true;
 
     let squares = [...document.querySelectorAll(".cell")].filter(
-      (square) => !square.querySelector(`i`)
+      (square) => !square.querySelector(`i`),
     );
     squares.forEach((square, i) => {
       square.style.cursor = "pointer";
@@ -281,7 +282,7 @@ function handleClick(piece) {
     storeBoard(board);
   } else {
     let squares = [...document.querySelectorAll(".cell")].filter(
-      (square) => !square.querySelector(`.highlight`)
+      (square) => !square.querySelector(`.highlight`),
     );
     squares.forEach((square, i) => {
       square.classList.remove("highlight");
@@ -339,7 +340,7 @@ function legalMove(targetPiece) {
           let possibleMove = row - i + column;
           possibleMoves.push(possibleMove);
           let targetSquare = document.querySelector(
-            `.${CSS.escape(possibleMove)}`
+            `.${CSS.escape(possibleMove)}`,
           );
           targetSquare.classList.add("highlight");
           targetPiece.removeAttribute("doubleMove");
@@ -348,7 +349,7 @@ function legalMove(targetPiece) {
         possibleMove = row - 1 + column;
         possibleMoves.push(possibleMove);
         targetSquareWhite = document.querySelector(
-          `.${CSS.escape(possibleMove)}`
+          `.${CSS.escape(possibleMove)}`,
         );
         targetSquareWhite.classList.add("highlight");
       }
@@ -358,7 +359,7 @@ function legalMove(targetPiece) {
           possibleMove = Number(row) + Number(i) + column;
           possibleMoves.push(possibleMove);
           targetSquareBlack = document.querySelector(
-            `.${CSS.escape(possibleMove)}`
+            `.${CSS.escape(possibleMove)}`,
           );
           targetSquareBlack.classList.add("highlight");
           targetPiece.removeAttribute("doubleMove");
