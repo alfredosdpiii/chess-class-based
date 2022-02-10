@@ -1,6 +1,5 @@
 const chessboard = document.querySelector(".chess-board");
 const cells = document.querySelectorAll(".cell");
-
 let whiteTurn = true;
 let state = false;
 let board = [
@@ -189,7 +188,6 @@ function config() {
       cell.setAttribute("data-column", column);
 
       chessboard.appendChild(cell);
-      //black piece
       if (board[row][column] === "bp") {
         let bp = new Piece();
         bp.createPiece(cell, "pawn", false);
@@ -215,7 +213,6 @@ function config() {
         bq.createPiece(cell, "queen", false);
       }
 
-      //white piece
       if (board[row][column] === "wp") {
         let wp = new Piece();
         wp.createPiece(cell, "pawn", true);
