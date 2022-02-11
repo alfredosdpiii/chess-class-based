@@ -243,23 +243,70 @@ function config() {
 
 const pieceNames = ["pawn", "king", "queen", "rook", "bishop", "knight"];
 
-function addEventHandlers() {
-  for (let i = 0; i < pieceNames.length; i++) {
-    let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
-    pieces.forEach((piece, i) => {
-      piece.style.cursor = "pointer";
-      piece.addEventListener("click", handleClick);
-    });
+// function addEventHandlers() {
+//   for (let i = 0; i < pieceNames.length; i++) {
+//     let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
+//     pieces.forEach((piece, i) => {
+//       piece.style.cursor = "pointer";
+//       piece.addEventListener("click", handleClick);
+//     });
+//
+//     // squares.forEach((square, i) => {
+//     // let squares = document.querySelectorAll(".cell");
+//     //   square.addEventListener("click", handleClick);
+//     // });
+//   }
+// }
+//
 
-    // squares.forEach((square, i) => {
-    // let squares = document.querySelectorAll(".cell");
-    //   square.addEventListener("click", handleClick);
-    // });
-  }
+function setUpClickEvent() {
+  chessboard.addEventListener("click", container_lambda, false);
 }
+const container_lambda = function (event) {
+  this.handleClick(event);
+}.bind(this);
 
+// clickEventHandler(event)
+// {
+//     this.clicked_row    = parseInt(event.target.dataset.row);
+//     this.click_col      = parseInt(event.target.dataset.col);
+//
+//     switch (this.current_state) {
+//         case this.STATE.PLAYER_TURN:
+//             this.playerTurn();
+//             break;
+//         case this.STATE.PLAYER_MOVING:
+//             this.playerMoving();
+//             break;
+//
+//         case this.STATE.PLAYER_ENDTURN:
+//             this.endTurn();
+//             break;
+//
+//         case this.STATE.PLAYER_PROMOTION:
+//             // awaiting choice queen, rook, bishop, knight
+//             console.log("Showing choices.");
+//             break;
+//
+//         case this.STATE.QUIT:
+//             console.log("GAME ENDED.");
+//             break;
+//
+//         default:
+//             break;
+//     }
+//
+//     // update and render
+//     this.message = this.current_player.team;
+//     this.displayHUD();
+//     this.updateBoard();
+//     this.checkIfChecked();
+//     this.displayCaptures();
+//     this.renderBoard();
+// }
 config();
-addEventHandlers();
+setUpClickEvent();
+// addEventHandlers();
 
 function handleClick(piece) {
   if (!state) {
