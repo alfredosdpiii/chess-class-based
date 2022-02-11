@@ -266,44 +266,6 @@ const container_lambda = function (event) {
   this.handleClick(event);
 }.bind(this);
 
-// clickEventHandler(event)
-// {
-//     this.clicked_row    = parseInt(event.target.dataset.row);
-//     this.click_col      = parseInt(event.target.dataset.col);
-//
-//     switch (this.current_state) {
-//         case this.STATE.PLAYER_TURN:
-//             this.playerTurn();
-//             break;
-//         case this.STATE.PLAYER_MOVING:
-//             this.playerMoving();
-//             break;
-//
-//         case this.STATE.PLAYER_ENDTURN:
-//             this.endTurn();
-//             break;
-//
-//         case this.STATE.PLAYER_PROMOTION:
-//             // awaiting choice queen, rook, bishop, knight
-//             console.log("Showing choices.");
-//             break;
-//
-//         case this.STATE.QUIT:
-//             console.log("GAME ENDED.");
-//             break;
-//
-//         default:
-//             break;
-//     }
-//
-//     // update and render
-//     this.message = this.current_player.team;
-//     this.displayHUD();
-//     this.updateBoard();
-//     this.checkIfChecked();
-//     this.displayCaptures();
-//     this.renderBoard();
-// }
 config();
 setUpClickEvent();
 // addEventHandlers();
