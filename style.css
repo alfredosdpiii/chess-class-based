@@ -47,7 +47,7 @@ div {
   border: 3px solid black;
 }
 .white {
-  color: green;
+  color: rgb(255, 255, 255);
 }
 
 .a8 {
@@ -309,14 +309,18 @@ div {
 } */
 
 .light-cell {
-  background: #fff;
+  background: rgb(216, 210, 176);
   font-size: 7vmin;
 }
 .dark-cell {
-  background: gray;
+  background: rgb(156, 111, 43);
   font-size: 7vmin;
 }
 
 .highlight {
-  background: rgba(82, 129, 141, 0.9);
+  background: rgba(82, 129, 141, 0.4);
+}
+
+.red {
+  background: rgba(145, 21, 21, 0.5);
 }

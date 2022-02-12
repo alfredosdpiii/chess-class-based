@@ -243,22 +243,32 @@ function config() {
 
 const pieceNames = ["pawn", "king", "queen", "rook", "bishop", "knight"];
 
-function addEventHandlers() {
-  for (let i = 0; i < pieceNames.length; i++) {
-    let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
-    pieces.forEach((piece, i) => {
-      piece.style.cursor = "pointer";
-    });
+// function addEventHandlers() {
+//   for (let i = 0; i < pieceNames.length; i++) {
+//     let pieces = document.querySelectorAll(`.fa-chess-${pieceNames[i]}`);
+//     pieces.forEach((piece, i) => {
+//       piece.style.cursor = "pointer";
+//       piece.addEventListener("click", handleClick);
+//     });
+//
+//     // squares.forEach((square, i) => {
+//     // let squares = document.querySelectorAll(".cell");
+//     //   square.addEventListener("click", handleClick);
+//     // });
+//   }
+// }
+//
 
-    let squares = document.querySelectorAll(".cell");
-    squares.forEach((square, i) => {
-      square.addEventListener("click", handleClick);
-    });
-  }
+function setUpClickEvent() {
+  chessboard.addEventListener("click", container_lambda, false);
 }
+const container_lambda = function (event) {
+  this.handleClick(event);
+}.bind(this);
 
 config();
-addEventHandlers();
+setUpClickEvent();
+// addEventHandlers();
 
 function handleClick(piece) {
   if (!state) {
@@ -287,6 +297,13 @@ function handleClick(piece) {
       square.classList.remove("highlight");
     });
 
+    let squaresRed = [...document.querySelectorAll(".cell")].filter(
+      (square) => !square.querySelector(`.red`)
+    );
+    squaresRed.forEach((square, i) => {
+      square.classList.remove("red");
+    });
+
     //reset pointer events after piece moved
     let cellElements = document.querySelectorAll(".cell");
     cellElements.forEach((cell) => {
@@ -297,24 +314,52 @@ function handleClick(piece) {
     board[x][y] = " ";
 
     landingSquare = piece.target;
-
-    console.log(landingSquare);
+    landingDiv = piece.target.parentNode;
 
     let x2 = piece.target.dataset.row;
     let y2 = piece.target.dataset.column;
-
+    let x3 = piece.target.parentNode.dataset.row;
+    let y3 = piece.target.parentNode.dataset.column;
     let latestBoard = boardHistory[boardHistory.length - 1];
 
-    if (latestBoard[x2][y2] !== " ") {
-      board[x2][y2] = "";
-      board[x2][y2] = boardItem;
-      // landingSquare.appendChild(targetPiece);
-      landingSquare.removeChild(landingSquare.lastElementChild);
-      landingSquare.appendChild(targetPiece);
+    if (whiteTurn === true) {
+      if (landingSquare.tagName === "DIV") {
+        if (landingSquare.firstChild) {
+          console.log("occupied");
+        } else {
+          board[x2][y2] = boardItem;
+          landingSquare.appendChild(targetPiece);
+        }
+      } else {
+        if (!landingSquare.classList.contains("white")) {
+          board[x3][y3] = " ";
+          board[x3][y3] = boardItem;
+          landingDiv.removeChild(landingSquare);
+          landingDiv.appendChild(targetPiece);
+          // resetBoard();
+          // config();
+        } else {
+          console.log("clicked");
+        }
+      }
     } else {
-      board[x2][y2] = "";
-      board[x2][y2] = boardItem;
-      landingSquare.appendChild(targetPiece);
+      if (landingSquare.tagName === "DIV") {
+        if (landingSquare.firstChild) {
+          console.log("occupied");
+        } else {
+          board[x2][y2] = boardItem;
+          landingSquare.appendChild(targetPiece);
+        }
+      } else {
+        if (landingSquare.classList.contains("white")) {
+          board[x3][y3] = " ";
+          board[x3][y3] = boardItem;
+          landingDiv.removeChild(landingSquare);
+          landingDiv.appendChild(targetPiece);
+        } else {
+          console.log("clicked");
+        }
+      }
     }
 
     if (whiteTurn === true) {
@@ -322,22 +367,40 @@ function handleClick(piece) {
     } else {
       whiteTurn = true;
     }
-
-    console.log(board);
   }
 }
 
 function legalMove(targetPiece) {
   let row = targetPiece.parentNode.dataset.row;
   let column = targetPiece.parentNode.dataset.column;
+  let x = parseInt(row);
+  let y = parseInt(column);
 
   if (targetPiece.value === "pawn") {
     let possibleMoves = [];
+    let possibleCaptures = [];
     if (whiteTurn === true) {
       if (targetPiece.getAttribute("doubleMove")) {
         for (i = 1; i < 3; i++) {
-          let possibleMove = row - i + column;
+          let moveUp = row - i;
+          let possibleMove = moveUp + column;
+          let captureRight = Number(column) + 1;
+          let captureLeft = column - 1;
+          let possibleCaptureRight = moveUp + captureRight.toString();
+          let possibleCaptureLeft = moveUp + captureLeft.toString();
+          possibleCaptures.push(possibleCaptureRight);
+          possibleCaptures.push(possibleCaptureLeft);
           possibleMoves.push(possibleMove);
+
+          possibleCaptures.forEach((capture) => {
+            let captureSquare = document.querySelector(
+              `.${CSS.escape(capture)}`
+            );
+            if (captureSquare.firstChild) {
+              captureSquare.classList.add("red");
+            }
+          });
+
           let targetSquare = document.querySelector(
             `.${CSS.escape(possibleMove)}`
           );
@@ -374,7 +437,10 @@ function legalMove(targetPiece) {
     let cellElements = document.querySelectorAll(".cell");
     let nonLegalMoves = [];
     cellElements.forEach((cell, i) => {
-      if (!cell.classList.contains("highlight")) {
+      if (
+        !cell.classList.contains("highlight") &&
+        !cell.classList.contains("red")
+      ) {
         nonLegalMoves.push(cell);
       }
     });
@@ -966,4 +1032,17 @@ function storeBoard(board) {
     newBoard.push(newCellRow);
   });
   boardHistory.push(newBoard);
+}
+
+function removeHighlight() {
+  let squares = [...document.querySelectorAll(".cell")].filter(
+    (square) => !square.querySelector(`.highlight`)
+  );
+  squares.forEach((square, i) => {
+    square.classList.remove("highlight");
+  });
+}
+
+function resetBoard() {
+  chessboard.innerHTML = "";
 }
